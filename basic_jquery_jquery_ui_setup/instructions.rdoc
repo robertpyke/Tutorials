@@ -57,7 +57,7 @@ Now that you've downloaded jQuery, and placed it in the correct folder, you shou
 In the <head></head> section of your index.html, add the following:
     <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
 
-Now, when a user loads the index.html page of your site, they will download the jquery file, and process it is a javascript.
+Now, when a user loads the index.html page of your site, they will download the jquery file, and process it as javascript.
 
 == Setup jQueryUI
 === Download jQueryUI
@@ -116,7 +116,7 @@ The head section of your index.html should now look like this:
     <link rel="stylesheet" href="javascript/themes/base/jquery-ui.css" type="text/css" media="all">
   </head>
 
-Now, when a user loads the index.html page of your site, they will download the jquery and jquery-ui file, and process them both as javascript.
+Now when a user loads the index.html page of your site, they will download the jquery and jquery-ui file, and process them both as javascript.
 They will also download the default jQuery theme css file.
 
 == Testing
