@@ -38,7 +38,7 @@ For now, put the following inside the index.html file:
 
 == Setup jQuery
 === Download jQuery
-Go to: http://jquery.com/ and download the development version of jQuery
+Go to: http://jquery.com and download the development version of jQuery
 
 You will likely end up at a URL like the following: http://code.jquery.com/jquery-1.7.1.js
 
@@ -63,7 +63,7 @@ Now, when a user loads the index.html page of your site, they will download the 
 === Download jQueryUI
 jQueryUI comes in a variety of different themes. For now, we will use the default theme. In future, you should choose a theme that matches the website you're creating.
 
-Go to http://jqueryui.com/ and download the latest dev bundle.
+Go to http://jqueryui.com and download the latest dev bundle.
 
 The link will be something like: http://jquery-ui.googlecode.com/files/jquery-ui-1.8.17.zip
 
