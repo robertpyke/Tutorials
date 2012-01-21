@@ -200,10 +200,10 @@ Now your ready to use jQuery and jQueryUI to build your web applications.
 
 You should look into the jQuery and jQueryUI docs.
 
-jQuery Docs:         http://docs.jquery.com/Main_Page
-jQuery Tutorials:    http://docs.jquery.com/Tutorials
-jQUeryUI Docs:       http://docs.jquery.com/UI
-jQUeryUI Demos:      http://jqueryui.com/demos/
+* jQuery Docs:         http://docs.jquery.com/Main_Page
+* jQuery Tutorials:    http://docs.jquery.com/Tutorials
+* jQUeryUI Docs:       http://docs.jquery.com/UI
+* jQUeryUI Demos:      http://jqueryui.com/demos/
 
 
 == Google API Hosting
