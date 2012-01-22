@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps Hello World</title>
+    <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="javascript/ui/jquery-ui.js"></script>
+    <link rel="stylesheet" href="javascript/themes/base/jquery-ui.css" type="text/css" media="all">
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY-&sensor=SET_TO_TRUE_OR_FALSE">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var myOptions = {
+          center: new google.maps.LatLng(-19.32585, 146.756654),
+          zoom: 16,
+          mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            myOptions);
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>

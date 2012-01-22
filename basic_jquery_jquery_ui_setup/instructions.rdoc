@@ -26,6 +26,7 @@ Your initial directory structure should look like the following:
 == Setup index.html
 For now, put the following inside the index.html file:
 
+  <!DOCTYPE html>
   <html>
     <head>
       <title></title>
@@ -125,6 +126,7 @@ To make sure that you have jQuery and jQueryUI set up right, we're going to add 
 === Modify your index.html
 Change your index.html to have the following
 
+  <!DOCTYPE html>
   <html>
 
     <head>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Move Map Randomly</title>
+    <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="javascript/ui/jquery-ui.js"></script>
+    <link rel="stylesheet" href="javascript/themes/base/jquery-ui.css" type="text/css" media="all">
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&sensor=SET_TO_TRUE_OR_FALSE">
+    </script>
+    <script type="text/javascript">
+      var map;
+      function initialize() {
+        var myOptions = {
+          center: new google.maps.LatLng(-19.32585, 146.756654),
+          zoom: 4,
+          mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        setInterval( "moveMapRandomly()", 2000); // Run every 2000ms (every 2 seconds)
+      }
+
+      function moveMapRandomly() {
+        // Look up our current location
+        var current_lat_long = map.getCenter();
+
+        var current_lat = map.getCenter().lat();
+        var current_long = map.getCenter().lng();
+
+        // Generate new latitude and longitude co-ords
+        var latitude = Math.random() * 90;       // -90 to 90 is valid, so generate 0 to 90
+        var longitude = Math.random() * 180;     // -180 to 180 is valid, so generate 0 to 180
+
+        var new_location = new google.maps.LatLng(latitude, longitude);       // Create a LatLng object from our new latitude and longitude
+
+
+        // Set the center of our map to our new location
+        map.setCenter(new_location);
+
+        // Set the info paragraph to tell the user the map is moved. Use a highlight effect, to bring it to the user's attention
+        $('#info').html("Moved from " + current_lat + ", " + current_long + " to " + latitude + ", " + longitude).effect("highlight", {}, 1000);
+      }
+
+    </script>
+  </head>
+  <body onload="initialize()">
+    <p id="info">Moving a Map Randomly</p>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
