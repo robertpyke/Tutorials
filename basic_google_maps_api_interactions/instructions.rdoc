@@ -1,3 +1,5 @@
+Author: Robert Pyke
+
 = Setup
 == Initial Directory Setup
 Setup your environment based on the tutorial: basic_jquery_jquery_ui_setup
@@ -77,7 +79,7 @@ Change your index.html file to be as follows:
         #map_canvas { height: 100% }
       </style>
       <script type="text/javascript"
-        src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY-Tar7bKnIcY&sensor=SET_TO_TRUE_OR_FALSE">
+        src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&sensor=SET_TO_TRUE_OR_FALSE">
       </script>
       <script type="text/javascript">
         function initialize() {
@@ -127,7 +129,7 @@ Put the following code in your move_map_randomly.html file.
         #map_canvas { height: 100% }
       </style>
       <script type="text/javascript"
-        src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAo3TVBlAHxH57sROb2cV_7-Tar7bKnIcY&sensor=false">
+        src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&sensor=SET_TO_TRUE_OR_FALSE">
       </script>
       <script type="text/javascript">
         var map;
@@ -179,7 +181,7 @@ I'll now run you through how this code works.
 We first create a +map+ variable. This map variable is outside of a function scope, so it persists across the functions.
 
 The +initialize+ function creates a map centered on +latitude+: -19.32585, +longitude+: 146.756654.
-Once the map is created, we use the jQuery function +setInterval+ to call the +moveMapRandomly+ every 2 seconds.
+Once the map is created, we use the jQuery function +setInterval+ to call the +moveMapRandomly+ function every 2 seconds.
 
 The +moveMapRandomly+ function can be broken down into 4 parts.
 1. The +current_lat+ and +current_long+  of the map's center is calculated.
@@ -187,7 +189,7 @@ The +moveMapRandomly+ function can be broken down into 4 parts.
    Then we look up our current_lat and current_long from the center of the map.
 2. Generate new +map+ +latitude+ and +longitude+ co-ordinates.
    This is done by using javascript's +Math.random+ function, which generates a float between 0 and 1. 
-   We can then multiply the result of +Math.random()+ to get a random number in our desired range.
+   We can then multiply the result of +Math.random+ to get a random number in our desired range.
 3. We set the map's center to our generated +latitude+ and +longitude+ values.
 4. We update our +info+ paragraph to inform the user that we moved the map's center. After we change the html content, we use jQueryUI's +highlight+ function to
    bring the user's atterntion to the change.

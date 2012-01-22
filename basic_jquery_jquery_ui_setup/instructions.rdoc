@@ -1,3 +1,5 @@
+Author: Robert Pyke
+
 = JQuery and JQueryUI Setup
 == Purpose
 When writing javascript, it is commonplace to use a library such as jQuery.
