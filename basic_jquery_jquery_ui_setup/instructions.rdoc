@@ -156,7 +156,7 @@ Change your index.html to have the following
 * We added test.js to our included scripts.
 * We've given our paragraph a new id.
 * We've added a button.
-* We've created a div, with an inner h3 and p. These have classes which should test out some of jquery-ui elements.
+* We've created a div, with an inner h3 and p. These have classes which should test out some of jquery-ui functions.
 * We've added a dialog.
 
 === Create test.js
