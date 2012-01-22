@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map Marker</title>
+    <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="javascript/ui/jquery-ui.js"></script>
+    <link rel="stylesheet" href="javascript/themes/base/jquery-ui.css" type="text/css" media="all">
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&sensor=false">
+    </script>
+    <script type="text/javascript">
+      var jcu = new google.maps.LatLng(-19.32585, 146.756654);
+      var marker;
+      var map;
+
+      function initialize() {
+        var mapOptions = {
+          zoom: 9,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: jcu
+        };
+
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+        // The marker will remain hidden until the location is set
+        marker = new google.maps.Marker({
+          map:map,
+          draggable:true,
+          animation: google.maps.Animation.DROP // When the marker initially comes into existence, drop it in place
+        });
+
+        // Event Listener - map.click
+        //
+        // The map incurred a single click event
+        // Move our marker to location of the click event
+        google.maps.event.addListener(map, 'click', function(event) {
+          var clicked_lat  = event.latLng.lat();
+          var cliecked_lon = event.latLng.lng();
+
+          marker.setPosition(event.latLng);
+          $('#info').html("Marker moved because of click event, new lat: " + clicked_lat + ", lng: " + cliecked_lon).effect("highlight", {}, 1000);
+        });
+
+        // Event Listener - marker.dragend
+        //
+        // The marker incurred a drag event.
+        // Print the result of the drag event.
+        google.maps.event.addListener(marker, 'dragend', function(event) {
+          var clicked_lat  = event.latLng.lat();
+          var cliecked_lon = event.latLng.lng();
+
+          $('#info').html("Marker moved because of drag event, new lat: " + clicked_lat + ", lng: " + cliecked_lon).effect("highlight", {}, 1000);
+        });
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+    <p id="info">Click to place a marker</p>
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
