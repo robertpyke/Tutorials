@@ -153,7 +153,7 @@ Change your index.html to have the following
 
   </html>
 
-* We added test.js to our included scripts.
+* We've added test.js to our included scripts.
 * We've given our paragraph a new id.
 * We've added a button.
 * We've created a div, with an inner h3 and p. These have classes which should test out some of jquery-ui functions.
