@@ -35,7 +35,8 @@ Setup index.html
 --------------------
 
 For now, put the following inside the index.html file:
-```html
+
+``` html
   <!DOCTYPE html>
   <html>
     <head>
@@ -127,7 +128,8 @@ Modify html
 Now that you've downloaded jQueryUI, and placed the relevant files in your javascript folder, you should be able to point your index.html at it.
 
 In the `<head></head>` section of your index.html, add the following:
-```html
+
+``` html
   <script type="text/javascript" src="javascript/ui/jquery-ui.js"></script>
   <link rel="stylesheet" href="javascript/themes/base/jquery-ui.css" type="text/css" media="all">
 ```
@@ -135,7 +137,8 @@ In the `<head></head>` section of your index.html, add the following:
 Make sure you add the jquery-ui javascript script after the jquery javascript.
 
 The head section of your index.html should now look like this:
-```html
+
+``` html
   <head>
     <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="javascript/ui/jquery-ui.js"></script>
@@ -156,7 +159,8 @@ Modify your index.html
 ------------------------
 
 Change your index.html to have the following
-```html
+
+``` html
 
   <!DOCTYPE html>
   <html>
@@ -200,7 +204,8 @@ Create test.js
 Create a file called "test.js", and put it in your javascript folder.
 
 Put the following in your test.js file:
-```javascript
+
+``` javascript
   $(document).ready(function() {
     $("#my_para").click(function () {
       $(this).effect("highlight", {}, 3000);
