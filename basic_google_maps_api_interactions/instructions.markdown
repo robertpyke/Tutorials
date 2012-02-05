@@ -204,20 +204,17 @@ The `initialize` function creates a map centered on `latitude`: -19.32585, `long
 Once the map is created, we use the jQuery function `setInterval` to call the `moveMapRandomly` function every 2 seconds.
 
 The `moveMapRandomly` function can be broken down into 4 parts.
-1. The `current_lat` and `current_long`  of the map's center is calculated.
-   This is done by first getting the map center via the map's `getCenter` function.
-   Then we look up our current_lat and current_long from the center of the map.
-2. Generate new `map` `latitude` and `longitude` co-ordinates.
-   This is done by using javascript's `Math.random` function, which generates a float between 0 and 1. 
-   We can then multiply the result of `Math.random` to get a random number in our desired range.
+
+1. The `current_lat` and `current_long`  of the map's center is calculated. This is done by first getting the map center via the map's `getCenter` function. Then we look up our current_lat and current_long from the center of the map.
+2. Generate new `map` `latitude` and `longitude` co-ordinates. This is done by using javascript's `Math.random` function, which generates a float between 0 and 1. We can then multiply the result of `Math.random` to get a random number in our desired range.
 3. We set the map's center to our generated `latitude` and `longitude` values.
-4. We update our `info` paragraph to inform the user that we moved the map's center. After we change the html content, we use jQueryUI's `highlight` function to
-   bring the user's atterntion to the change.
+4. We update our `info` paragraph to inform the user that we moved the map's center. After we change the html content, we use jQueryUI's `highlight` function to bring the user's atterntion to the change.
 
 Further Reading
 ==================
 
 You can read more about the Google Maps javascript API at:
+
 * http://code.google.com/apis/maps/documentation/javascript/tutorial.html
 * http://code.google.com/apis/maps/documentation/javascript/basics.html
 
