@@ -22,14 +22,14 @@ Directory Structure
 
 Your initial directory structure should look like the following:
 
-  public/
-    index.html
+    public/
+      index.html
 
-    images/
+      images/
 
-    stylesheets/
+      stylesheets/
 
-    javascript/
+      javascript/
 
 Setup index.html
 --------------------
