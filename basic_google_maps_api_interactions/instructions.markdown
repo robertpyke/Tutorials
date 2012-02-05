@@ -10,36 +10,36 @@ Setup your environment based on the tutorial: basic_jquery_jquery_ui_setup
 
 You should have a directory structure as follows:
 
-  public/
-    index.html
+    public/
+      index.html
 
-    images/
+      images/
 
-    stylesheets/
+      stylesheets/
 
-    javascript/
-      jquery-1.7.1.js
+      javascript/
+        jquery-1.7.1.js
 
-      AUTHORS.txt
+        AUTHORS.txt
 
-      GPL-LICENSE.txt
+        GPL-LICENSE.txt
 
-      MIT-LICENSE.txt
+        MIT-LICENSE.txt
 
-      demos/
-        ..
-      docs/
-        ..
-      external/
-        ..
-      tests/
-        ..
-      themes/
-        ..
-      ui/
-        jquery-ui.js
-        ..
-      version.txt
+        demos/
+          ..
+        docs/
+          ..
+        external/
+          ..
+        tests/
+          ..
+        themes/
+          ..
+        ui/
+          jquery-ui.js
+          ..
+        version.txt
 
 Your index.html should have the following `<head></head>`:
 
