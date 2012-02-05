@@ -294,7 +294,7 @@ I'll now run you through how this code works.
 
 We first create a `map`, `marker` and `jcu` variable. These variables are all outside of a function scope, so that they can persist across the functions. The `jcu` variable is a google maps LatLng instance with latitude and longitude set to James Cook University's location.
 
-The `initialize` function does a various things.
+The `initialize` function does various things.
 
 1. It creates a map centered on `jcu`.
 2. It initializers the marker variable. The marker is assigned to our map (the one centered on jcu). The marker is set so as to be draggable. The marker's animation is assigned to DROP. This means when the marker is assigned a location for the first time, it will appear to drop into the map.
