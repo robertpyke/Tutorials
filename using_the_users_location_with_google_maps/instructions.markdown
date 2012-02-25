@@ -306,20 +306,24 @@ Full Example - Create a map and marker at the user's location
 ```
 
 This code determine the user's location, and will center the map on the user's position.
-
 I'll run you through how this code works.
-
-We first check if the user's browser support's the geolocation api. 
-
+We first check if the user's browser support's the geolocation api.
 If the user's browser supports the geolocation api, we attempt to get the user's position.
-
 If we get the position, we process it via the <code>processPosition</code> function.
 
 The <code>processPosition</code> function does the following:
+
 1. It gets the latitude and longitude of the position.
 2. It creates a Google LatLng object from the user's position.
 3. It creates a map centered at the user's position.
 4. It places a marker at the user's position.
+
+Exercise
+=========
+
+Try modifying the code so that the map's zoom is set based on the accuracy of the geolocation position.
+For example, a geolocation position with accuracy of zoom 40 can be zoomed very closely (as it is accurate to 40 meters).
+If the position accuracy is 180000, then you should have a much lower zoom (zoomed out further).
 
 Further Reading
 ==================
