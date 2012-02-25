@@ -99,6 +99,7 @@ The following errors are described in the API:
 ** The specified maximum length of time has elapsed before the implementation could successfully acquire a new Position object.
 
 The PositionError interface:
+
 ```javascript
 
  interface PositionError {
@@ -113,6 +114,7 @@ The PositionError interface:
 ```
 
 Using the getCurrentPosition function:
+
 ```javascript
 
   // Handle an error getting the user's position 
@@ -126,6 +128,7 @@ Using the getCurrentPosition function:
 
   // Ask the user for their position
   navigator.geolocation.getCurrentPosition(gotPositionCallback, errorCallback);
+
 ```
 
 Using the user's position
