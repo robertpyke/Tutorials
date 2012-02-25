@@ -160,7 +160,7 @@ The Position interface contains Coordinates, which is defined as:
 
 ```
 
-In general, the things you will care about is latitude, longitude and accuracy.
+In general, the things you will care about are latitude, longitude and accuracy.
 
 The latitude and longitude attributes are geographic coordinates specified in decimal degrees.
 
