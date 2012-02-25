@@ -24,7 +24,7 @@
       //  The value of the accuracy attribute must be a non-negative real number.
 
       // Process the user's position
-      function process_position(position) {
+      function processPosition(position) {
         // Log the details of the position
         //
         // Note: console.log is not supported in all browsers, and should only be used
@@ -84,7 +84,7 @@
         // If the user's browser supports getting a geo-location
         // then ask them for access to their current location.
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(process_position, handleGeoLocationError);
+          navigator.geolocation.getCurrentPosition(processPosition, handleGeoLocationError);
         } else {
           handleGeoLocationUnsupported();
         }
