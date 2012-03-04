@@ -8,7 +8,7 @@ You can check what directory you're in using the <code>pwd</code> command. <code
 
 e.g.
 
-```shell
+```bash
 
 $ pwd
 /Users/robert/Dropbox/Documents/My Code/Git_WA/Tutorials/linux
@@ -22,7 +22,7 @@ You can list the contents of the directory using the <code>ls</code> command.
 
 e.g.
 
-```shell
+```bash
 
 $ ls
 README.rdoc                           basic_jquery_jquery_ui_setup      processing_markers_via_json_and_ajax
@@ -40,7 +40,7 @@ You can view extra details by passing specific flags to the command. I often use
 
 You can learn more about the <code>ls</code> command by looking at the man page.
 
-```shell
+```bash
 
 $ man ls
 
@@ -48,7 +48,7 @@ $ man ls
 
 e.g. Using extra flags
 
-```shell
+```bash
 
 $ pwd
 /Users/robert/Dropbox/Documents/My Code/Git_WA/Tutorials
@@ -70,9 +70,14 @@ Changing Directory
 -------------------
 
 You can change directory using the <code>cd</code> command. <code>cd</code> stands for change directory.
-To go up a directory level, specify the directory as <code>../</code>.
 
-```shell
+The <code>cd</code> command takes 0 or 1 arguments.
+
+The <code>cd</code> command takes your destination directory as an argument. This is the directory you want to change to. It can either be provided as a relative path, or a full path. A relative path is one relative to your current location. It doesn't have a leading slash (e.g. linux/tools). A full path is one with a leading slash (e.g. /tmp/linux/tools). To go up a directory level, specify the directory as <code>../</code>.
+
+If you don't supply the command an argument, you will change directory to your home folder.
+
+```bash
 
 $ pwd
 /Users/robert/Dropbox/Documents/My Code/Git_WA/Tutorials/linux
