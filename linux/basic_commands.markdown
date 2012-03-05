@@ -75,7 +75,7 @@ The <code>cd</code> command takes 0 or 1 arguments.
 
 The <code>cd</code> command takes your destination directory as an argument. This is the directory you want to change to. It can either be provided as a relative path, or a full path. A relative path is one relative to your current location. It doesn't have a leading slash (e.g. linux/tools). A full path is one with a leading slash (e.g. /tmp/linux/tools). To go up a directory level, specify the directory as <code>../</code>.
 
-If you don't supply the command an argument, you will change directory to your home folder.
+If you don't supply the command an argument, you will change directory to your home directory.
 
 ```bash
 
@@ -98,5 +98,49 @@ $ pwd
 
 $ ls
 basic_commands.markdown
+
+```
+
+Copying a File/Directory
+------------------------
+
+You can copy a file using the <code>cp</code> command. The <code>cp</code> command takes a target file and a destination. The target file is the file to be copied. The destination can either be a directory or a file. If it is a directory, then the file will be copied into the directory, and given the same name as the target file had. If the destination is a file, then the target file will be copied to the destination location and named as specified by the destination.
+
+You can use the R flag to recursively copy a directory and all of its contents.
+
+e.g. copy a file into a directory
+
+```bash
+
+$ cp source_file.txt destination_directory
+
+```
+
+e.g. copy a file into a directory with a new name
+
+```bash
+
+$ cp source_file.txt destination_folder/new_file_name.txt
+
+```
+
+e.g. copy a directory and all of its content
+
+```bash
+
+$ cp -R source_directory /tmp/new_directory_name
+
+```
+
+Moving a File/Directory
+------------------------
+You can move a file using the <code>mv</code> command. The <code>mv</code> command takes a target file and a destination. The target file is the file to be copied. The destination can either be a directory or a file. If it is a directory, then the file will be copied into the directory, and given the same name as the target file had. If the destination is a file, then the target file will be copied to the destination location and named as specified by the destination.
+
+
+e.g.
+
+```bash
+
+$ mv R source_file.txt /tmp/new_file_name.txt
 
 ```
