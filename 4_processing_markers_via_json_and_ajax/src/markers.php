@@ -1,6 +1,6 @@
 <?php
 // Set the output type to json
-header('Content-type: text/json');
+header('Content-type: application/json');
 
 $locations = array();
 
