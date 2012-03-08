@@ -129,7 +129,7 @@ Modify your index.html to have the following content:
       #map_canvas { height: 100% }
     </style>
 
-    // TODO: Change API_KEY
+    <!-- TODO: Change API_KEY -->
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=API_KEY&sensor=false"></script>
 
     <script type="text/javascript">
