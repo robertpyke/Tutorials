@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place Markers via Ajax</title>
+    <script type="text/javascript" src="javascript/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="javascript/ui/jquery-ui.js"></script>
+    <link rel="stylesheet" href="javascript/themes/base/jquery-ui.css" type="text/css" media="all">
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=API_KEY&sensor=false"></script>
+
+    <script type="text/javascript">
+      // Global Vars
+      var map;
+
+      // Set up the map so that it is centered on 'map_center' and
+      // zoomed to a level of 'zoom'.
+      function setupMap(map_center, zoom) {
+        var myOptions = {
+          center: map_center,
+          zoom: zoom,
+          mapTypeId: google.maps.MapTypeId.HYBRID
+        };
+
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+      }
+
+      // Get the markers from the website,
+      // and place each marker on the map.
+      //
+      // TODO: Change the code so that the marker id is used to represent a single marker.
+      // If an update is received with a marker that already exists on the map (id matches an existing marker), move the existing marker 
+      //
+      // HINT: Use a global Hash/Map to store references to your markers.
+      // e.g. var markers = {}   ... etc.
+      //      markers[<marker_id>] = <marker_object>;
+      function updateMapWithMarkers() {
+        // Do an Ajax get request to get the marker locations from the server.
+        $.get( ('markers.php'), function(data) {
+          // Create a Bounds to capture the area covered by the markers we're
+          // processing.
+          var new_markers_bounds = new google.maps.LatLngBounds();
+
+          // Iterate over the locations provided by the server.
+          $.each(data['locations'], function(index, loc) {
+            // Get the marker's id, latitude and longitude
+            var loc_id = loc['id'];
+            var lat = loc['latitude'];
+            var lng = loc['longitude'];
+
+            // Create a LatLng object for the marker's position
+            var marker_lat_lng = new google.maps.LatLng(lat, lng);
+            // Extend the new_markers_bounds to covr the new marker's position
+            new_markers_bounds.extend(marker_lat_lng);
+
+            // Create and place a new marker.
+            //
+            // TODO: Instead of always creating a new marker...
+            // either create or move the marker based on whether or not the marker's id is in use on our map.
+            var marker = new google.maps.Marker({
+              map:map,
+              draggable: false,
+              animation: google.maps.Animation.DROP,
+              position: marker_lat_lng,
+              // Set the hover-over title of the marker
+              title: ( "Location id: " + loc_id + ", lat: " + lat + ", lng: " + lng )
+            });
+          });
+
+          // Now that we've iterated over the server markers..
+          // extend the new_markers_bounds to include what the map currently shows.
+          new_markers_bounds.union(map.getBounds());
+          // Change the map to fit the bounds.
+          map.fitBounds(new_markers_bounds);
+        });
+      }
+
+      // set up the map, and then start our update function
+      function initialize() {
+        var zoom = 10;
+        jcu_lat_lng = new google.maps.LatLng(-19.32585, 146.756654),
+        setupMap(jcu_lat_lng, zoom);
+
+        // Update the markers info every X ms
+        var delay = 10000;
+
+        // Run the updateMapWithMarkers function every delay ms
+        window.setInterval(updateMapWithMarkers, delay);
+      }
+
+
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
