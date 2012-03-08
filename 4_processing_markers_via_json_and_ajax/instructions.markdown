@@ -239,7 +239,7 @@ If you see an id that you already have a marker for, you should move the existin
 A HINT on how to do this has been left in the source code.
 
 
-Consider what would happen if the server went down temporarily (404 response code), or was overloaded (503 response code). How would this affect the Ajax request. Using the API documentation for the $.get() method, describe how you could handle an unexpected http response code.
+Consider what would happen if the server was overloaded (503 response code). How would this affect the Ajax request. Using the API documentation for the $.get() method, describe how you could handle an unexpected http response code.
 
 Further Reading
 =============
