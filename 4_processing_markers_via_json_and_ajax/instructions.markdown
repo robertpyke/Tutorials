@@ -221,7 +221,7 @@ Modify your index.html to have the following content:
 
 ````
 
-Please read the code comments for a detailed understanding of what the code does. The following is a summary of what the code does.
+Please read the code comments for a detailed understanding of what the code does. The following is a summary of what the code does:
 
 * When the page loads, the initialize function is run.
 * The initialize function runs the setupMap function, and then starts a timed event to call the updateMapWithMarkers function every 10 seconds.
