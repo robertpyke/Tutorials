@@ -250,6 +250,7 @@ HTTP Response Codes:
 
 Ajax:
 
+* http://api.jquery.com/category/ajax/
 * http://api.jquery.com/jQuery.get/
 * http://en.wikipedia.org/wiki/Ajax_(programming)
 * http://en.wikipedia.org/wiki/XMLHttpRequest
