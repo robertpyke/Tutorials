@@ -190,13 +190,8 @@ Modify your index.html to have the following content:
             });
           });
 
-          // Now that we've iterated over the server markers..
-          // extend the new_markers_bounds to include what the map currently shows.
-          new_markers_bounds.union(map.getBounds());
-          if(!( map.getBounds().contains(new_markers_bounds.getNorthEast()) && map.getBounds().contains(new_markers_bounds.getSouthWest()))) {
-            // Change the map to fit the bounds.
-            map.fitBounds(new_markers_bounds);
-          }
+          // Change the map to fit the bounds (will pan to show only the new markers).
+          map.fitBounds(new_markers_bounds);
 
         });
       }
