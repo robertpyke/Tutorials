@@ -42,10 +42,8 @@ You don't need to understand the javascript.
 For those of you who are curious, it's basically injecting 
 a remote twitter api javascript file inline.
 The javascript is acting on the attributes of the html link above it.
-In the example above, the data-via attribute defines who to attribute the
-tweet to.
-
-You would normally set the data-via to your company's twitter handle.
+In the example above, the <code>data-via</code> attribute defines who to attribute the
+tweet to. You would normally set the <code>data-via</code> to your company's twitter handle.
 
 References
 ==========
