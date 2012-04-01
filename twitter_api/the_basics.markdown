@@ -14,7 +14,7 @@ following interactive builder: https://twitter.com/about/resources/buttons#tweet
 The interactive builder produces some html. The html includes a link, and some
 javascript associated with the link.
 
-e.g. output:
+e.g. example tweet button code:
 
 ```html
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="robertpyke">Tweet</a>
@@ -39,7 +39,7 @@ The javascript is acting on the attributes of the html link above it.
 In the example above, the data-via attribute defines who to attribute the
 tweet to.
 
-e.g. generated tweet: "<code>page_title</code> <code>page_url</code> via @robertpyke"
+e.g. generated tweet: <code><page_title> <page_url> via @robertpyke</code>
 
 You would normally set the data-via to your company's twitter handle.
 
