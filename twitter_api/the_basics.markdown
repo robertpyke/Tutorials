@@ -39,7 +39,11 @@ The javascript is acting on the attributes of the html link above it.
 In the example above, the data-via attribute defines who to attribute the
 tweet to.
 
-e.g. generated tweet: <code><page_title> <page_url> via @robertpyke</code>
+e.g. generated tweet:
+
+```
+<page_title> <page_url> via @robertpyke
+```
 
 You would normally set the data-via to your company's twitter handle.
 
