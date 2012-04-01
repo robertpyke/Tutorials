@@ -32,18 +32,18 @@ e.g. tweet button code:
 </script>
 ```
 
+e.g. generated tweet:
+
+```
+<page_title> <page_url> via @robertpyke
+```
+
 You don't need to understand the javascript.
 For those of you who are curious, it's basically injecting 
 a remote twitter api javascript file inline.
 The javascript is acting on the attributes of the html link above it.
 In the example above, the data-via attribute defines who to attribute the
 tweet to.
-
-e.g. generated tweet:
-
-```
-<page_title> <page_url> via @robertpyke
-```
 
 You would normally set the data-via to your company's twitter handle.
 
