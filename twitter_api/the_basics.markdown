@@ -14,7 +14,7 @@ following interactive builder: https://twitter.com/about/resources/buttons#tweet
 The interactive builder produces some html. The html includes a link, and some
 javascript associated with the link.
 
-e.g. example tweet button code:
+e.g. tweet button code:
 
 ```html
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="robertpyke">Tweet</a>
