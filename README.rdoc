@@ -1,2 +1,3 @@
 === Tutorials
-This repository is a place for me to store code associated with tutorials I write for my blog.
+This repository is a place for me to store code associated with tutorials I
+develop.
