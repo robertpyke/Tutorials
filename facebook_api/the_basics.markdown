@@ -31,7 +31,7 @@ into the following plugins.
 
 For those of you who are more adventureous, it is worth noting that Facebook is
 an OpenID provider. This means that you can allow people to log-in to your site
-via their existing Facebook account.
+via their existing Facebook account. Read more here: http://openid.net/add-openid/
 
 You can also integrate more directly with Facebook by following this guide: http://developers.facebook.com/docs/guides/web/#login.
 It describes how to use Facebook as your authentication layer. It also describes
@@ -73,3 +73,4 @@ References
 * Facebook Developer Web Guide: http://developers.facebook.com/docs/guides/web/
 * Facebook Developer Mobile App Guide: http://developers.facebook.com/docs/guides/mobile/
 * Facebook Social Plugins: http://developers.facebook.com/docs/plugins/
+* OpenID: http://openid.net/add-openid/
