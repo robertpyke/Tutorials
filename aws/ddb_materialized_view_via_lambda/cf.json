@@ -1,0 +1,175 @@
+{
+  "Resources": {
+    "PointStreamSource": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "PointTable",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "PointCategoryRollUp",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "Metadata": {
+        "Comment": "This resources maps our PointCategoryRollUp Lambda to our Point table stream as a trigger."
+      }
+    },
+    "PointCategoryRollUp": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Code": {
+          "ZipFile": "# TODO"
+        },
+        "Runtime": "python3.6",
+        "Timeout": "25",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource will execute our roll-up code, which will let us write summary data into the map."
+      }
+    },
+    "MapTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "Map",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "MapId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "MapId",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our top-level Map table (A map will have many points)."
+      }
+    },
+    "PointTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "Point",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "MapId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "PointId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "MapId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "PointId",
+            "KeyType": "RANGE"
+          }
+        ],
+        "StreamSpecification": {
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our Point table (A map will have many points)."
+      }
+    },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "root",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:*"
+                  ],
+                  "Resource": "arn:aws:logs:*:*:*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "xray:PutTraceSegments",
+                    "xray:PutTelemetryRecords"
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:DescribeStream",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:ListStreams"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "PointTable",
+                        "StreamArn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
