@@ -462,3 +462,17 @@ Click on the log stream, and view the logs for your Lambda:
 
 ```
 As you can see, the logs contain information about the DynamoDB Stream events. In our case, we can see no "OldImage", but we do see a "NewImage".
+
+Take a moment to explore the logs. Try to understand what code in our Lambda function is generating these logs.
+
+###Lambda XRay
+
+Return to the monitoring page for our Lambda function.
+
+Click the "View traces in X-Ray" link.
+
+These traces show us the call path to our Lambda for requests, and how long it took to execute each piece of the callpath.
+
+Take a moment to look at your traces, and service map. While trivial in this case, they can be useful in more complicated flows, or when additional services, such as API Gateway, are added.
+
+![Example Trace](https://cdn.rawgit.com/robertpyke/Tutorials/5a0b2ebe/aws/ddb_materialized_view_via_lambda/XRayTrace.png "Example Trace")
