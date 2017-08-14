@@ -239,3 +239,33 @@ Our function will execute using the LambdaExecutionRole, which is described late
 All the permissions we need will need to be attached to that role.
 At a minimum, our Lambda will need permission to read the source stream,
 and write to the Map table. We will also add trace and logging permissions.
+
+Generate the CF Stack
+---------------------------
+
+Go to your AWS Account, open the CloudFormation console.
+
+Once at the Cloud Formation console, click, "Create Stack".
+
+Click "Design Template".
+
+At the bottom, choose "Template", you should see JSON like the following:
+
+```javascript
+
+{
+    "AWSTemplateFormatVersion": "2010-09-09"
+}
+
+```
+
+Copy the content of **cf.json** into the Template (replace the entire contents of the text field).
+
+Now click the refreh in the top-right corner.
+
+You should now see a view like this:
+
+![CF Template Editor](https://cdn.rawgit.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/CF%20Stack%20Image.png "CF Template Editor")
+
+Now click the "Create Stack" icon. It looks like a cloud with an upload arrow.
+
