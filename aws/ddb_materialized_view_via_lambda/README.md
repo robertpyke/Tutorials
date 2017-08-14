@@ -34,13 +34,22 @@ We'll be using DynamoDB to represent these objects.
 A Map has a mapId (our unique identifier).
 
 A Point is on a map (so it references the map).
-A point with have a category associated with it.
+A point will have a category associated with it.
 For example: "Restaurant", or "Landmark".
 
-The Map has some summary data about the points on it (e.g. how many points are associated with the map).
-That data (the summary about points), is our materialized view.
-We're going to store it back on the Map, but you could also write
+The Map has some summary data about the points on it (e.g. how many points are 
+associated with the map). That data (the summary about points), 
+is our materialized view. We're going to store it back on the Map, but 
+you could also write it to a separate table.
 
+We're going to be using AWS to represent this overall flow.
+Representing our infrastructure in code should be considered "best practice".
+We'll be using CloudFormation to represent our infrastructure.
+This allows us to review and track(audit) our infrastructure changes. It 
+also makes it easier to roll-back to a previous infrastructure state.
+
+You can find the architecture CF stack for  this tutorial as a sibling file to
+this README (cf.json).
 
 CloudFormation Template
 --------------------
@@ -51,7 +60,7 @@ First, the Map Table.
 
 ```javascript
 
-{
+"Resources": {
     "MapTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
@@ -76,9 +85,18 @@ First, the Map Table.
       "Metadata": {
         "Comment": "This resource defines our top-level Map table (A map will have many points)."
       }
-    },
-
+    },...
 ```
+
+The resource is named "MapTable". We will use this key to reference this resource
+in other resources. For examples, we will need to provide our Lambda write access
+to this table.
+We're using a fixed Table Name, "Map".
+As DynamoDB is schemaless, we only need to provide information about the attributes
+used in keys. In this case, we're stating that MapId is a String (S), and that it is the HASH.
+This table has no Range key. 
+We're not using any secondary (LSI/GSI) indices on this table.
+We're providing 5 Read/Write units for the table.
 
 ```javascript
 
