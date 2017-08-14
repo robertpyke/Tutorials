@@ -12,5 +12,5 @@ its state based on the origin table.
 This tutorial will describe how to generate a materialized view, using a 
 Dynamo stream trigger and a Lambda to produce a roll-up view.
 
-![DDB Materialized View Flow](https://github.com/robertpyke/Tutorials/blob/master/aws/ddb_materialized_view_via_lambda/PointCategoryRollUpTutorial.svg "DDB Materialized View Flow")
+![DDB Materialized View Flow](https://cdn.rawgit.com/robertpyke/Tutorials/9b0f37f8/aws/ddb_materialized_view_via_lambda/PointCategoryRollUpTutorial.svg "DDB Materialized View Flow")
 
