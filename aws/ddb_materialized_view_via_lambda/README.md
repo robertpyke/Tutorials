@@ -17,7 +17,7 @@ Dynamo stream trigger and a Lambda to produce a roll-up view.
 CloudFormation Template
 --------------------
 
-```json
+```javascript
 
 {
     "PointTable": {
