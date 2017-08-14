@@ -48,15 +48,20 @@ We'll be using CloudFormation to represent our infrastructure.
 This allows us to review and track(audit) our infrastructure changes. It 
 also makes it easier to roll-back to a previous infrastructure state.
 
-You can find the architecture CF stack for  this tutorial as a sibling file to
-this README (cf.json).
 
 CloudFormation Template
 --------------------
 
+You can find the architecture CF stack for this tutorial as a sibling file to
+this README (cf.json).
+
+The following is a graphical view of the Cloudformation template:
+
+![CF Template](https://cdn.rawgit.com/robertpyke/Tutorials/af345960/aws/ddb_materialized_view_via_lambda/CF%20Template.png "CF Template")
+
 We'll step through each part of the provided cloud formation template.
 
-First, the Map Table.
+**The Map Table**:
 
 ```javascript
 
@@ -104,6 +109,9 @@ We're not using any secondary (LSI/GSI) indices on this table.
 
 We're providing 5 Read/Write units for the table.
 
+
+**The Point Table**:
+
 ```javascript
 
 {
@@ -131,13 +139,13 @@ We're providing 5 Read/Write units for the table.
                     "KeyType": "RANGE"
                 }
             ],
-                "StreamSpecification": {
-                    "StreamViewType": "NEW_AND_OLD_IMAGES"
-                },
-                "ProvisionedThroughput": {
-                    "ReadCapacityUnits": "5",
-                    "WriteCapacityUnits": "5"
-                }
+            "StreamSpecification": {
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": "5",
+                "WriteCapacityUnits": "5"
+            }
         },
         "Metadata": {
             "Comment": "This resource defines our Point table (A map will have many points)."
@@ -147,7 +155,79 @@ We're providing 5 Read/Write units for the table.
 
 ```
 
+The Point Table is represented by a AWS::DynamoDB::Table resource. [Docs are available describing this resource](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html).
 
-![CF Template](https://cdn.rawgit.com/robertpyke/Tutorials/af345960/aws/ddb_materialized_view_via_lambda/CF%20Template.png "CF Template")
+The resource is named "PointTable".
 
+We're using a fixed Table Name, "Point".
 
+This Table uses MapId as the HASH (partition-key), and PointId as the RANGE.
+
+We're not using any secondary (LSI/GSI) indices on this table.
+
+We're providing 5 Read/Write units for the table.
+
+We're defining a stream for this table. The stream will provide the last 24 hours of updates for the table.
+It's effectively a managed, less-configurable, kinesis stream. In this case,
+we're indicating that each record in the stream should contain the old and new image.
+The old image is the state before a change, and the new image is the state after the change.
+For example, if a record is new, the old image will be null. If the record is deleted, the new image will be null.
+If the record is updated, the old image will be the initial state, and the new image will be the updated state.
+[The official docs contain more info](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html).
+
+**Lambda that generates materialized view**
+
+The PointCategoryRollUp is our Lambda function.
+
+We're going to use it to "roll-up" the summary data to
+the Map table, as points are added.
+
+```javascript
+
+{
+    "PointCategoryRollUp": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Code": {
+          "ZipFile": "# TODO"
+        },
+        "Runtime": "python3.6",
+        "Timeout": "25",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource will execute our roll-up code, which will let us write summary data into the map."
+      }
+
+}
+
+```
+
+The PointCategoryRollUp Lambda function is represented by a AWS::Lambda::Function resource. [Docs are available describing this resource](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html). Note, we also need to represent the event sources (triggers) for our Lambda. Those are represented as separate resources.
+
+The resource is named "PointCategoryRollUpTutorial".
+
+Our function's runtime is python 3.6.
+
+The function handler is the function we're expecting to execute within our Python file.
+
+We've enabled tracing. You can read more about XRay Tracing in the official docs (http://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html#using-x-ray).
+
+We've described our function's code inline. (ZipFile, for Python, can be just the code inline). We've left it as a TODO comment.
+You probably wouldn't leave it as a TODO in production.
+
+Our function has a 25 second timeout (for no particular reason).
+
+Our function will execute using the LambdaExecutionRole, which is described later.
+All the permissions we need will need to be attached to that role.
+At a minimum, our Lambda will need permission to read the source stream,
+and write to the Map table. We will also add trace and logging permissions.
