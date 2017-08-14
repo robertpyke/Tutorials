@@ -375,7 +375,7 @@ Insert "Washington State Capitol":
 ```json
 {
     "PointId": "WashingtonStateCapitolId",
-    "MapId": "OregonMapId",
+    "MapId": "OlympiaMapId",
     "Category": "Landmark"
 }
 ```
