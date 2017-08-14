@@ -88,6 +88,8 @@ First, the Map Table.
     },...
 ```
 
+The Map Table is represented by a AWS::DynamoDB::Table resource. [Docs are available describing this resource](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html).
+
 The resource is named "MapTable". We will use this key to reference this resource
 in other resources. For examples, we will need to provide our Lambda write access
 to this table.
