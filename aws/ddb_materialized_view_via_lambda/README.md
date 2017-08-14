@@ -479,11 +479,9 @@ Take a moment to look at your traces, and service map. While trivial in this cas
 
 ### Lambda Code To Update Map Points
 
-Let's now update the Lambda function, so that it increments a count of points on the associate map, everytime a point is added.
+Let's now update the Lambda, so that it prints the map object associate with the point being updated.
 
-We'll keep it simple for now, and make a big assumption. We'll assume we're only handling INSERTS.
-
-```javascript
+```python
 
 from __future__ import print_function
 import json
@@ -508,7 +506,93 @@ def lambda_handler(event, context):
         mapId = mapIdObj['S']
         
         map = maps.get_item(Key={'MapId': mapId})
-        print('map: ' + map)
+        print('map: ' + str(map))
+        
+        # print('DynamoDB Record: ' + json.dumps(record['dynamodb'], indent=2))
+        print('MapId: ' + mapId)
+    return 'Successfully processed {} records.'.format(len(event['Records']))
+
+```
+
+Our code is a little fragile, but let's run with this first.
+
+Use the following as a test event:
+
+```javascript
+
+{
+  "Records": [
+    {
+      "eventID": "1",
+      "eventVersion": "1.0",
+      "dynamodb": {
+        "Keys": {
+          "Id": {
+            "N": "101"
+          }
+        },
+        "NewImage":{
+           "Category":{
+              "S":"Landmark"
+           },
+           "Address":{
+              "S":"400 Broad St, Seattle, WA 98109"
+           },
+           "PointId":{
+              "S":"SpaceNeedleId"
+           },
+           "MapId":{
+              "S":"SeattleMapId"
+           }
+        },
+        "StreamViewType": "NEW_AND_OLD_IMAGES",
+        "SequenceNumber": "111",
+        "SizeBytes": 26
+      },
+      "awsRegion": "us-west-2",
+      "eventName": "INSERT",
+      "eventSourceARN": "XXX",
+      "eventSource": "aws:dynamodb"
+    }
+  ]
+}
+
+```
+
+Save and test with this event. We should see the map is logged:
+
+![Lambda Test Response](https://cdn.rawgit.com/robertpyke/Tutorials/168e5aad/aws/ddb_materialized_view_via_lambda/LambdaTestLogs.png "Lambda Test Response")
+
+Let's now update the Lambda function, so that it increments a count of points on the associate map, everytime a point is added.
+
+We'll keep it simple for now, and make a big assumption. We'll assume we're only handling INSERTS.
+
+```python
+
+from __future__ import print_function
+import json
+from boto3 import resource
+from boto3.dynamodb.conditions import Key
+
+print('Loading function')
+
+dynamodb_resource = resource('dynamodb')
+maps = dynamodb_resource.Table('Map')
+
+def lambda_handler(event, context):
+    print('Received event: ' + json.dumps(event, indent=2))
+    for record in event['Records']:
+        print(record['eventID'])
+        print(record['eventName'])
+        
+        # Determine the map associated with this point
+        dynamodbRecord = record['dynamodb']
+        newImage = dynamodbRecord['NewImage'] 
+        mapIdObj = newImage['MapId']
+        mapId = mapIdObj['S']
+        
+        map = maps.get_item(Key={'MapId': mapId})
+        print('map: ' + str(map))
         
         # print('DynamoDB Record: ' + json.dumps(record['dynamodb'], indent=2))
         print('MapId: ' + mapId)
