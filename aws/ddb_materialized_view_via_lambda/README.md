@@ -565,12 +565,11 @@ Save and test with this event. We should see the map is logged:
 
 Let's now update the Lambda function, so that it increments a count of points on the associate map, everytime a point is added.
 
-We'll keep it simple for now, and make a big assumption. We'll assume we're only handling INSERTS.
-
 ```python
 
 from __future__ import print_function
 import json
+import decimal
 from boto3 import resource
 from boto3.dynamodb.conditions import Key
 
@@ -587,15 +586,29 @@ def lambda_handler(event, context):
         
         # Determine the map associated with this point
         dynamodbRecord = record['dynamodb']
-        newImage = dynamodbRecord['NewImage'] 
-        mapIdObj = newImage['MapId']
-        mapId = mapIdObj['S']
+        oldImage = dynamodbRecord.get('OldImage')
+        newImage = dynamodbRecord.get('NewImage')
         
-        map = maps.get_item(Key={'MapId': mapId})
-        print('map: ' + str(map))
-        
-        # print('DynamoDB Record: ' + json.dumps(record['dynamodb'], indent=2))
-        print('MapId: ' + mapId)
+        # Only add a point to the Map summary when a point is added
+        # Note: We're not yet handling deletesm, but we are skipping updates.
+        if oldImage is None and newImage is not None:
+            mapIdObj = newImage['MapId']
+            mapId = mapIdObj['S']
+            print('MapId: ' + mapId)
+            
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="ADD TotalPoints :val",
+                ExpressionAttributeValues={
+                    ':val': decimal.Decimal(1)
+                },
+                ReturnValues="UPDATED_NEW"
+            )
+
+            print('response: ' + str(response))   
+
     return 'Successfully processed {} records.'.format(len(event['Records']))
 
 ```
