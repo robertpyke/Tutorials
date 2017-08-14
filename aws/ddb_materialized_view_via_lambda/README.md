@@ -514,7 +514,6 @@ def lambda_handler(event, context):
     return 'Successfully processed {} records.'.format(len(event['Records']))
 
 ```
-#### Lamdba Increment Total Points
 
 Our code is a little fragile, but let's run with this first.
 
@@ -564,6 +563,8 @@ Use the following as a test event:
 Save and test with this event. We should see the map is logged:
 
 ![Lambda Test Response](https://cdn.rawgit.com/robertpyke/Tutorials/168e5aad/aws/ddb_materialized_view_via_lambda/LambdaTestLogs.png "Lambda Test Response")
+
+#### Lamdba Increment Total Points
 
 Let's now update the Lambda function, so that it increments a count of points on the associated map, everytime a point is added.
 
@@ -616,3 +617,48 @@ def lambda_handler(event, context):
 ```
 
 We're doing an unconditional update here. We're also performing a relative value update. We're adding 1 to whatever the value is at the time the update is executed. This is an [atomic counter operation](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateItem.html). This should mean we don't need to worry about optimistic locking scenarios (or another write clobbering our value). That said, we're not remembering if we performed the operation or not. If the Lambda fails after the write (low-risk), it may result in a higher TotalPoint count than we actually have. This technicque is good for things where this margin of error is acceptable. For example, page views, comment counts, etc.
+
+Save and test the updated code.
+
+Take a look at the "SeattleMapId" Map object in the Dynamo Console. You should see the TotalPoints attribute is now visible, and has a count of 1. 
+
+
+Now let's create a new map, and then add some points to it.
+
+Create a "Townsville" map:
+
+```json
+{
+  "MapId": "TownsvilleMapId",
+  "City": "Townsville",
+  "State": "QLD",
+  "Country": "AUS"
+}
+```
+
+And some points in Townsville; as you add each point, take a look at the Map object. You should see it update to reflect the TotalPoints. 
+
+```json
+{
+  "PointId": "StrandId",
+  "MapId": "TownsvilleMapId",
+  "Category": "Landmark"
+}
+```
+
+```json
+{
+  "PointId": "OldHospital",
+  "MapId": "TownsvilleMapId",
+  "Category": "Landmark"
+}
+```
+
+```json
+{
+  "PointId": "PizzaByTheSea",
+  "MapId": "TownsvilleMapId",
+  "Category": "Restaurant"
+}
+```
+
