@@ -390,3 +390,7 @@ Insert "Sydney Opera House":
   "Category": "Landmark"
 }
 ```
+
+You should now have 4 points in the Point table:
+
+![Point Records](https://cdn.rawgit.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/PointsRecords.png "Point Records")
