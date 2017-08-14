@@ -476,3 +476,42 @@ These traces show us the call path to our Lambda for requests, and how long it t
 Take a moment to look at your traces, and service map. While trivial in this case, they can be useful in more complicated flows, or when additional services, such as API Gateway, are added.
 
 ![Example Trace](https://cdn.rawgit.com/robertpyke/Tutorials/5a0b2ebe/aws/ddb_materialized_view_via_lambda/XRayTrace.png "Example Trace")
+
+### Lambda Code To Update Map Points
+
+Let's now update the Lambda function, so that it increments a count of points on the associate map, everytime a point is added.
+
+We'll keep it simple for now, and make a big assumption. We'll assume we're only handling INSERTS.
+
+```javascript
+
+from __future__ import print_function
+import json
+from boto3 import resource
+from boto3.dynamodb.conditions import Key
+
+print('Loading function')
+
+dynamodb_resource = resource('dynamodb')
+maps = dynamodb_resource.Table('Map')
+
+def lambda_handler(event, context):
+    print('Received event: ' + json.dumps(event, indent=2))
+    for record in event['Records']:
+        print(record['eventID'])
+        print(record['eventName'])
+        
+        # Determine the map associated with this point
+        dynamodbRecord = record['dynamodb']
+        newImage = dynamodbRecord['NewImage'] 
+        mapIdObj = newImage['MapId']
+        mapId = mapIdObj['S']
+        
+        map = maps.get_item(Key={'MapId': mapId})
+        print('map: ' + map)
+        
+        # print('DynamoDB Record: ' + json.dumps(record['dynamodb'], indent=2))
+        print('MapId: ' + mapId)
+    return 'Successfully processed {} records.'.format(len(event['Records']))
+
+```
