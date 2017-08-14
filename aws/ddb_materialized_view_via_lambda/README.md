@@ -267,5 +267,22 @@ You should now see a view like this:
 
 ![CF Template Editor](https://cdn.rawgit.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/CF%20Stack%20Image.png "CF Template Editor")
 
+Take a moment to look around in the designer; explore the components. If you edit anything, just remember to change the template back before proceeding.
+
 Now click the "Create Stack" icon. It looks like a cloud with an upload arrow.
 
+You should now be back at the "Select Template" page, but with an S3 url for the template we just created.
+
+Now click "Next" (from the "Select Template" page).
+
+You can name the stack whatever you like. In this case, I'm going to call it: "MapPointRollUp". Click "Next".
+
+We can now provide options for our stack. I'm going to leave these as the default. Click "Next".
+
+We're now on the "Review" page. This stack is going to create an AWS IAM Role. As such, you need to check "I acknowledge that AWS CloudFormation might create IAM resources.". Once you've done that, click "Create".
+
+Now your stack is being created. Click the refresh icon (top right), to see the stack generation progress.
+
+![CF Stack Progress](https://cdn.rawgit.com/robertpyke/Tutorials/c956fa41/aws/ddb_materialized_view_via_lambda/Stack%20Progress%20Image.png "CF Stack Progress")
+
+If everything works as expected, the stack should move to the "CREATE_COMPLETE" status. Now, click on the stack name "MapPointRollUp". This will take you to a detailed view of what the stack has done. Take a moment to explore this view.
