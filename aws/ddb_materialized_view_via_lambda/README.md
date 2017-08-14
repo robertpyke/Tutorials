@@ -416,3 +416,49 @@ We should find a log stream for our Lambda.
 Click on the log stream, and view the logs for your Lambda:
 
 ![Lambda Logs](https://cdn.rawgit.com/robertpyke/Tutorials/f79b6b16/aws/ddb_materialized_view_via_lambda/MapPointRollUpLogs.png "Lambda Logs")
+
+```javascript
+
+{
+   "Records":[
+      {
+         "eventID":"557c8825da98fd59e1ac0e4db8258c99",
+         "eventName":"INSERT",
+         "eventVersion":"1.1",
+         "eventSource":"aws:dynamodb",
+         "awsRegion":"us-east-2",
+         "dynamodb":{
+            "ApproximateCreationDateTime":1502740560.0,
+            "Keys":{
+               "PointId":{
+                  "S":"SpaceNeedleId"
+               },
+               "MapId":{
+                  "S":"SeattleMapId"
+               }
+            },
+            "NewImage":{
+               "Category":{
+                  "S":"Landmark"
+               },
+               "Address":{
+                  "S":"400 Broad St, Seattle, WA 98109"
+               },
+               "PointId":{
+                  "S":"SpaceNeedleId"
+               },
+               "MapId":{
+                  "S":"SeattleMapId"
+               }
+            },
+            "SequenceNumber":"100000000000950939886",
+            "SizeBytes":128,
+            "StreamViewType":"NEW_AND_OLD_IMAGES"
+         },
+         "eventSourceARN":"XXX"
+      }
+   ]
+}
+
+```
+As you can see, the logs contain information about the DynamoDB Stream events. In our case, we can see no "OldImage", but we do see a "NewImage".
