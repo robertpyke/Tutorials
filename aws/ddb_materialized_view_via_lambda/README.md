@@ -394,3 +394,12 @@ Insert "Sydney Opera House":
 You should now have 4 points in the Point table:
 
 ![Point Records](https://cdn.rawgit.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/PointsRecords.png "Point Records")
+
+### Lambda Console
+
+As we've been inserting point records, our Lambda should have been executing. Recall, it's supposed to execute to process every record change in the Point table. Our default Lambda code should be logging the records we processed. Let's now look at the Lambda console.
+
+Open the "Lambda" console. Select "Functions". We should be able to see our MapPointRollUp function:
+
+![Lambda Console](https://cdn.rawgit.com/robertpyke/Tutorials/9e9a780d/aws/ddb_materialized_view_via_lambda/MapPointRollUpLambdaDashboard.png "Lambda Console")
+
