@@ -14,5 +14,5 @@ Dynamo stream trigger and a Lambda to produce a roll-up view.
 
 ![DDB Materialized View Flow](https://cdn.rawgit.com/robertpyke/Tutorials/9b0f37f8/aws/ddb_materialized_view_via_lambda/PointCategoryRollUpTutorial.svg "DDB Materialized View Flow")
 
-![CF Template](https://cdn.rawgit.com/robertpyke/Tutorials/9b0f37f8/aws/ddb_materialized_view_via_lambda/CF%20Template.png "CF Template")
+![CF Template](https://cdn.rawgit.com/robertpyke/Tutorials/98cab5a2/aws/ddb_materialized_view_via_lambda/CW%20Template.png "CF Template")
 
