@@ -184,11 +184,10 @@ the Map table, as points are added.
 
 ```javascript
 
-{
     "PointCategoryRollUp": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
-        "Handler": "index.handler",
+        "Handler": "index.lambda_handler",
         "Role": {
           "Fn::GetAtt": [
             "LambdaExecutionRole",
@@ -196,7 +195,18 @@ the Map table, as points are added.
           ]
         },
         "Code": {
-          "ZipFile": "# TODO"
+          "ZipFile": { "Fn::Join": ["\n", [
+            "from __future__ import print_function",
+            "import json",
+            "print('Loading function')",
+            "def lambda_handler(event, context):",
+            "    print('Received event: ' + json.dumps(event, indent=2))",
+            "    for record in event['Records']:",
+            "        print(record['eventID'])",
+            "        print(record['eventName'])",
+            "        print('DynamoDB Record: ' + json.dumps(record['dynamodb'], indent=2))",
+            "    return 'Successfully processed {} records.'.format(len(event['Records']))"
+          ]]}
         },
         "Runtime": "python3.6",
         "Timeout": "25",
@@ -207,8 +217,7 @@ the Map table, as points are added.
       "Metadata": {
         "Comment": "This resource will execute our roll-up code, which will let us write summary data into the map."
       }
-
-}
+    }
 
 ```
 
@@ -222,8 +231,7 @@ The function handler is the function we're expecting to execute within our Pytho
 
 We've enabled tracing. You can read more about XRay Tracing in the official docs (http://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html#using-x-ray).
 
-We've described our function's code inline. (ZipFile, for Python, can be just the code inline). We've left it as a TODO comment.
-You probably wouldn't leave it as a TODO in production.
+We've described our function's code inline. (ZipFile, for Python, can be just the code inline). We're just using some sample code to print the event source. You probably wouldn't leave your code inline like this for anything non-trivial.
 
 Our function has a 25 second timeout (for no particular reason).
 
