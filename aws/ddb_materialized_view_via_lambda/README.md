@@ -302,6 +302,8 @@ We should now see "Map", and "Point".
 
 ![DynamoDB Tables](https://cdn.rawgit.com/robertpyke/Tutorials/cf13d567/aws/ddb_materialized_view_via_lambda/Dynamo%20Tables.png "Dynamo Tables")
 
+### Insert Sample Map Records
+
 Click on the "Map" table, and select the "Items" tab.
 
 Create a "Seattle" map:
@@ -340,3 +342,51 @@ Create a "Sydney" map:
 At this point, we should have 3 maps in our map table.
 
 ![Map Records](https://cdn.rawgit.com/robertpyke/Tutorials/9a622b0e/aws/ddb_materialized_view_via_lambda/MapRecords.png "Map Records")
+
+### Insert Sample Point Records
+
+Now we're going to insert some sample Point records.
+
+These will be some points of interest in each of these cities:
+
+Insert "Space Needle":
+
+```json
+{
+  "PointId": "SpaceNeedleId",
+  "MapId": "SeattleMapId",
+  "Category": "Landmark",
+  "Address": "400 Broad St, Seattle, WA 98109"
+}
+```
+
+Insert "Palace Kitchen":
+
+```json
+{
+  "PointId": "PalaceKitchenId",
+  "MapId": "SeattleMapId",
+  "Category": "Restaurant"
+}
+```
+
+Insert "Washington State Capitol":
+
+```json
+{
+    "PointId": "WashingtonStateCapitolId",
+    "MapId": "OregonMapId",
+    "Category": "Landmark"
+}
+```
+
+
+Insert "Sydney Opera House":
+
+```json
+{
+  "PointId": "SydneyOperaHouseId",
+  "MapId": "SydneyMapId",
+  "Category": "Landmark"
+}
+```
