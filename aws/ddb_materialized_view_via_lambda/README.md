@@ -612,3 +612,5 @@ def lambda_handler(event, context):
     return 'Successfully processed {} records.'.format(len(event['Records']))
 
 ```
+
+We're doing an unconditional update here. We're also performing a relative value update. We're adding 1 to whatever the value is at the time the update is executed. This is an [atomic counter operation](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_UpdateItem.html). This should mean we don't need to worry about optimistic locking scenarios (or another write clobbering our value). That said, we're not remembering if we performed the operation or not. If the Lambda fails after the write (low-risk), it may result in a higher TotalPoint count than we actually have. This technicque is good for things where this margin of error is acceptable. For example, page views, comment counts, etc.
