@@ -403,3 +403,6 @@ Open the "Lambda" console. Select "Functions". We should be able to see our MapP
 
 ![Lambda Console](https://cdn.rawgit.com/robertpyke/Tutorials/9e9a780d/aws/ddb_materialized_view_via_lambda/MapPointRollUpLambdaDashboard.png "Lambda Console")
 
+Now, open the "Monitoring" tab. We should be able to see that our Lambda has executed for the Point uploads. In my case, we've invoked our Lambda exactly 4 times (once per Point added). Note: Lambda can execute a batch of Dynamo event changes, so you may not see exactly 4 invocations.
+
+![Lambda Monitoring] (https://cdn.rawgit.com/robertpyke/Tutorials/6d0c3b2a/aws/ddb_materialized_view_via_lambda/MapPointRollUpMonitoringDashboard.png "Lambda Monitoring")
