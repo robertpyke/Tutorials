@@ -563,7 +563,7 @@ Save and test with this event. We should see the map is logged:
 
 ![Lambda Test Response](https://cdn.rawgit.com/robertpyke/Tutorials/168e5aad/aws/ddb_materialized_view_via_lambda/LambdaTestLogs.png "Lambda Test Response")
 
-Let's now update the Lambda function, so that it increments a count of points on the associate map, everytime a point is added.
+Let's now update the Lambda function, so that it increments a count of points on the associated map, everytime a point is added.
 
 ```python
 
