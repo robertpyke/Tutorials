@@ -152,6 +152,19 @@
                 {
                   "Effect": "Allow",
                   "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:UpdateItem"
+                  ],
+                  "Resource": {
+                      "Fn::GetAtt": [
+                        "MapTable",
+                        "Arn"
+                      ]
+                    }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
                     "xray:PutTraceSegments",
                     "xray:PutTelemetryRecords"
                   ],
