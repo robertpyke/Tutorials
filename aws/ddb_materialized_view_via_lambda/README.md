@@ -286,3 +286,57 @@ Now your stack is being created. Click the refresh icon (top right), to see the 
 ![CF Stack Progress](https://cdn.rawgit.com/robertpyke/Tutorials/c956fa41/aws/ddb_materialized_view_via_lambda/Stack%20Progress%20Image.png "CF Stack Progress")
 
 If everything works as expected, the stack should move to the "CREATE_COMPLETE" status. Now, click on the stack name "MapPointRollUp". This will take you to a detailed view of what the stack has done. Take a moment to explore this view.
+
+At this point, we should see our 2 dynamo tables (Map, and Point), in the Dynamo Console.
+
+Testing our Lambda event (and looking at logs/traces)
+------------------------------------------------------
+
+Let's now test the Lambda correctly executes when we the point is updated.
+
+Go to the "DynamoDB" console.
+
+Select "Tables".
+
+We should now see "Map", and "Point".
+
+![DynamoDB Tables](https://cdn.rawgit.com/robertpyke/Tutorials/cf13d567/aws/ddb_materialized_view_via_lambda/Dynamo%20Tables.png "Dynamo Tables")
+
+Click on the "Map" table, and select the "Items" tab.
+
+Create a "Seattle" map:
+
+```json
+{
+  "MapId": "SeattleMapId",
+  "City": "Seattle",
+  "State": "WA",
+  "Country": "US"
+}
+```
+
+Create an "Olympia" map:
+
+```json
+{
+  "MapId": "OlympiaMapId",
+  "City": "Olympia",
+  "State": "WA",
+  "Country": "US"
+}
+```
+
+Create a "Sydney" map:
+
+```json
+{
+  "MapId": "SydneyMapId",
+  "City": "Sydney",
+  "State": "NSW",
+  "Country": "AUS"
+}
+```
+
+At this point, we should have 3 maps in our map table.
+
+![Map Records](https://cdn.rawgit.com/robertpyke/Tutorials/9a622b0e/aws/ddb_materialized_view_via_lambda/MapRecords.png "Map Records")
