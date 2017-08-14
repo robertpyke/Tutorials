@@ -91,11 +91,15 @@ First, the Map Table.
 The resource is named "MapTable". We will use this key to reference this resource
 in other resources. For examples, we will need to provide our Lambda write access
 to this table.
+
 We're using a fixed Table Name, "Map".
+
 As DynamoDB is schemaless, we only need to provide information about the attributes
 used in keys. In this case, we're stating that MapId is a String (S), and that it is the HASH.
 This table has no Range key. 
+
 We're not using any secondary (LSI/GSI) indices on this table.
+
 We're providing 5 Read/Write units for the table.
 
 ```javascript
