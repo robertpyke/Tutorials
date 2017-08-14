@@ -465,7 +465,7 @@ As you can see, the logs contain information about the DynamoDB Stream events. I
 
 Take a moment to explore the logs. Try to understand what code in our Lambda function is generating these logs.
 
-###Lambda XRay
+### Lambda XRay
 
 Return to the monitoring page for our Lambda function.
 
