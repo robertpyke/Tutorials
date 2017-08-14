@@ -415,7 +415,7 @@ We should find a log stream for our Lambda.
 
 Click on the log stream, and view the logs for your Lambda:
 
-![Lambda Logs](https://cdn.rawgit.com/robertpyke/Tutorials/f79b6b16/aws/ddb_materialized_view_via_lambda/MapPointRollUpLogs.png "Lambda Logs")
+![Lambda Logs](https://cdn.rawgit.com/robertpyke/Tutorials/48581644/aws/ddb_materialized_view_via_lambda/MapPointRollUpLogs.png "Lambda Logs")
 
 ```javascript
 
