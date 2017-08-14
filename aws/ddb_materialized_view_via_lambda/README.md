@@ -477,8 +477,9 @@ Take a moment to look at your traces, and service map. While trivial in this cas
 
 ![Example Trace](https://cdn.rawgit.com/robertpyke/Tutorials/5a0b2ebe/aws/ddb_materialized_view_via_lambda/XRayTrace.png "Example Trace")
 
-### Lambda Code To Update Map Points
+### Lambda Code
 
+#### Lamdba Print Associated Map
 Let's now update the Lambda, so that it prints the map object associate with the point being updated.
 
 ```python
@@ -513,6 +514,7 @@ def lambda_handler(event, context):
     return 'Successfully processed {} records.'.format(len(event['Records']))
 
 ```
+#### Lamdba Increment Total Points
 
 Our code is a little fragile, but let's run with this first.
 
@@ -590,7 +592,7 @@ def lambda_handler(event, context):
         newImage = dynamodbRecord.get('NewImage')
         
         # Only add a point to the Map summary when a point is added
-        # Note: We're not yet handling deletesm, but we are skipping updates.
+        # Note: We're not yet handling deletes, but we are skipping updates.
         if oldImage is None and newImage is not None:
             mapIdObj = newImage['MapId']
             mapId = mapIdObj['S']
