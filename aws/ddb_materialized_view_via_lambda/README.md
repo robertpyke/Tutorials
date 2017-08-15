@@ -718,8 +718,8 @@ def lambda_handler(event, context):
 
             print('MapId: ' + mapId)
             print('Category: ' + category)
-            
-            # Default the category counts (if it doesn't exist)
+
+            # Default the CategoryCounts to an empty object
             response = maps.update_item(
                 Key={
                     'MapId': mapId
@@ -731,17 +731,18 @@ def lambda_handler(event, context):
                 ReturnValues="NONE"
             )
             
-            # Increment the total points count, and the category counts
+            # Increment TotalPoints and CategoryCounts
             response = maps.update_item(
                 Key={
                     'MapId': mapId
                 },
-                UpdateExpression="ADD TotalPoints :inc, CategoryCounts.#category :inc",
-                ExpressionAttributeValues={
-                    ':inc': decimal.Decimal(1)
-                },
+                UpdateExpression="SET TotalPoints = if_not_exists(TotalPoints, :zero) + :one,  CategoryCounts.#category = if_not_exists(CategoryCounts.#category, :zero) + :one",
                 ExpressionAttributeNames={
                     '#category': category
+                },
+                ExpressionAttributeValues={
+                    ':zero': decimal.Decimal(0),
+                    ':one': decimal.Decimal(1)
                 },
                 ReturnValues="UPDATED_NEW"
             )
@@ -755,6 +756,7 @@ def lambda_handler(event, context):
 The code above was updated with two update expresssions. I'll discuss those further now.
 
 ```python
+            # Default the CategoryCounts to an empty object
             response = maps.update_item(
                 Key={
                     'MapId': mapId
@@ -771,16 +773,18 @@ The above code defaults the CategoryCounts column to {} (an empty object), if it
 If it is set, this action will no-op. We need CategoryCounts to exist before we increment it using the atomic counter.
 
 ```python
+            # Increment TotalPoints and CategoryCounts
             response = maps.update_item(
                 Key={
                     'MapId': mapId
                 },
-                UpdateExpression="ADD TotalPoints :inc, CategoryCounts.#category :inc",
-                ExpressionAttributeValues={
-                    ':inc': decimal.Decimal(1)
-                },
+                UpdateExpression="SET TotalPoints = if_not_exists(TotalPoints, :zero) + :one,  CategoryCounts.#category = if_not_exists(CategoryCounts.#category, :zero) + :one",
                 ExpressionAttributeNames={
                     '#category': category
+                },
+                ExpressionAttributeValues={
+                    ':zero': decimal.Decimal(0),
+                    ':one': decimal.Decimal(1)
                 },
                 ReturnValues="UPDATED_NEW"
             )
