@@ -78,7 +78,7 @@ CloudFormation Template
 --------------------
 
 You can find the architecture CF stack for this tutorial as a sibling file to
-this README (cf.json](https://raw.githubusercontent.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/cf.json).
+this README [cf.json](https://raw.githubusercontent.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/cf.json).
 
 The following is a graphical view of the Cloudformation template:
 
