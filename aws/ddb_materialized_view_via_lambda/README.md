@@ -681,6 +681,8 @@ Once you've added the points, your "TownsvilleMapId" Map should look like this:
 
 It's nice to have the TotalPoints available directly from the Map, but I would like to have a better understanding of the different types of places we have in each city. Let's modify the roll-up to express the per-category sums.
 
+Specifically, lets add a CategoryCounts property to the Map, that has a key per category, and the count of the points for that category.
+
 ```python
 
 from __future__ import print_function
@@ -749,3 +751,41 @@ def lambda_handler(event, context):
     return 'Successfully processed {} records.'.format(len(event['Records']))
 
 ```
+
+The code above was updated with two update expresssions. I'll discuss those further now.
+
+```python
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                ExpressionAttributeValues={
+                    ':val': {}
+                },
+                ReturnValues="NONE"
+            )
+```
+
+The above code defaults the CategoryCounts column to {} (an empty object), if it isn't yet set.
+If it is set, this action will no-op. We need CategoryCounts to exist before we increment it using the atomic counter.
+
+```python
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="ADD TotalPoints :inc, CategoryCounts.#category :inc",
+                ExpressionAttributeValues={
+                    ':inc': decimal.Decimal(1)
+                },
+                ExpressionAttributeNames={
+                    '#category': category
+                },
+                ReturnValues="UPDATED_NEW"
+            )
+```
+
+The above code now performs two actions, it increments TotalPoints by one, but it also indexes into the CategoryCounts obj, and increments the specific category count. This update leverages the aforementioned atomic counter property.
+
+Note that we can use # to define a key within our object property.
