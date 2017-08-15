@@ -19,11 +19,11 @@ Background
 From [DynamoDB Stream Docs](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html):
 
 > A DynamoDB stream is an ordered flow of information about changes to items in an Amazon DynamoDB table. When you enable a stream on a table, DynamoDB captures information about every modification to data items in the table.
-
+>
 > Whenever an application creates, updates, or deletes items in the table, DynamoDB Streams writes a stream record with the primary key attribute(s) of the items that were modified. A stream record contains information about a data modification to a single item in a DynamoDB table. You can configure the stream so that the stream records capture additional information, such as the "before" and "after" images of modified items.
-
+>
 > DynamoDB Streams guarantees the following:
-
+>
 > Each stream record appears exactly once in the stream.
 > For each item that is modified in a DynamoDB table, the stream records appear in the same sequence as the actual modifications to the item.
 > DynamoDB Streams writes stream records in near real time, so that you can build applications that consume these streams and take action based on the contents.
