@@ -664,3 +664,14 @@ And some points in Townsville; as you add each point, take a look at the Map obj
 }
 ```
 
+Once you've added the points, your "TownsvilleMapId" Map should look like this:
+
+```json
+{
+  "City": "Townsville",
+  "Country": "AUS",
+  "MapId": "TownsvilleMapId",
+  "State": "QLD",
+  "TotalPoints": 3
+}
+```
