@@ -918,12 +918,271 @@ def lambda_handler(event, context):
 
 Now, when a point is deleted, the TotalPoints, and CategoryCounts, should be decremented.
 
-Let's test it. We'll delete a single point from Seattle (which should currently have 2 points). We'll delete the point with id "PalaceKitchenId". Take a look at the Seattle Map before deleting the point. You should currently have 1 Landmark, and 1 Restaurant (you may have more landmarks if you've been executing the test event for your Lambda). Once you delete the PalaceKitchen, the number of TotalPoints should decrement, and the category counts of Restaurants should have decremented to 0.
+Let's test it. We'll delete a single point from Seattle (which should currently have 2 points). We'll delete the point with id "PalaceKitchenId". Take a look at the Seattle Map before deleting the point. Take note of the TotalPoints, and CategoryCounts. You should currently have 1 Landmark, and 1 Restaurant (you may have more landmarks if you've been executing the test event for your Lambda). Once you delete the PalaceKitchen, the number of TotalPoints should decrement, and the category counts of Restaurants should have decremented (to 0).
 
+The following is my state, after a delete
 ```json
 {
   "CategoryCounts": {
     "Landmark": 1,
+    "Restaurant": 0
+  },
+  "City": "Seattle",
+  "Country": "US",
+  "MapId": "SeattleMapId",
+  "State": "WA",
+  "TotalPoints": 1
+}
+```
+
+#### Lamdba Category Change on Update
+
+Let's do a quick recap. When a Point is added or removed, we're updating the Map object to show the total number of points for the Map. We're also updating it to have specific category counts.
+
+What happens though, if a Point changes category? We're not currently handling that use. The category counts will be wrong. Let's quickly add support for that case.
+
+```python
+
+from __future__ import print_function
+import json
+import decimal
+from boto3 import resource
+from boto3.dynamodb.conditions import Key
+
+print('Loading function')
+
+dynamodb_resource = resource('dynamodb')
+maps = dynamodb_resource.Table('Map')
+
+def lambda_handler(event, context):
+    print('Received event: ' + json.dumps(event, indent=2))
+    for record in event['Records']:
+        print(record['eventID'])
+        print(record['eventName'])
+        
+        # Determine the map associated with this point
+        dynamodbRecord = record['dynamodb']
+        oldImage = dynamodbRecord.get('OldImage')
+        newImage = dynamodbRecord.get('NewImage')
+        
+        # Only add a point to the Map summary when a point is added
+        # Note: We're not yet handling deletes, but we are skipping updates.
+        if oldImage is None and newImage is not None:
+            mapIdObj = newImage['MapId']
+            mapId = mapIdObj['S']
+
+            categoryObj = newImage['Category']
+            category = categoryObj['S']
+
+            print('MapId: ' + mapId)
+            print('Category: ' + category)
+
+            # Default the CategoryCounts to an empty object
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                ExpressionAttributeValues={
+                    ':val': {}
+                },
+                ReturnValues="NONE"
+            )
+            
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET TotalPoints = if_not_exists(TotalPoints, :zero) + :one,  CategoryCounts.#category = if_not_exists(CategoryCounts.#category, :zero) + :one",
+                ExpressionAttributeNames={
+                    '#category': category
+                },
+                ExpressionAttributeValues={
+                    ':zero': decimal.Decimal(0),
+                    ':one': decimal.Decimal(1)
+                },
+                ReturnValues="UPDATED_NEW"
+            )
+
+            print('response: ' + str(response))
+
+        elif oldImage is not None and newImage is None:
+            # This is the delete case
+            mapIdObj = oldImage['MapId']
+            mapId = mapIdObj['S']
+
+            categoryObj = oldImage['Category']
+            category = categoryObj['S']
+
+            print('MapId: ' + mapId)
+            print('Category: ' + category)
+
+            # Default the CategoryCounts to an empty object
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                ExpressionAttributeValues={
+                    ':val': {}
+                },
+                ReturnValues="NONE"
+            )
+            
+            # Decrement the counts (default to one, if they don't exist)
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET TotalPoints = if_not_exists(TotalPoints, :one) - :one,  CategoryCounts.#category = if_not_exists(CategoryCounts.#category, :one) - :one",
+                ExpressionAttributeNames={
+                    '#category': category
+                },
+                ExpressionAttributeValues={
+                    ':one': decimal.Decimal(1)
+                },
+                ReturnValues="UPDATED_NEW"
+            )
+
+            print('response: ' + str(response))    
+
+        elif oldImage is not None and newImage is not None:
+
+            # This is the update case
+            mapIdObj = oldImage['MapId']
+            mapId = mapIdObj['S']
+
+            oldCategoryObj = oldImage['Category']
+            oldCategory = oldCategoryObj['S']
+
+            newCategoryObj = newImage['Category']
+            newCategory = newCategoryObj['S']
+
+            print('MapId: ' + mapId)
+            print('OldCategory: ' + oldCategory)
+            print('NewCategory: ' + newCategory)
+
+            # Only do this if the category changed
+            if oldCategory != newCategory:
+
+                # Default the CategoryCounts to an empty object
+                response = maps.update_item(
+                    Key={
+                        'MapId': mapId
+                    },
+                    UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                    ExpressionAttributeValues={
+                        ':val': {}
+                    },
+                    ReturnValues="NONE"
+                )
+                
+                # Decrement the count of the old category, and increment the count of the new category; don't change TotalPoints
+                response = maps.update_item(
+                    Key={
+                        'MapId': mapId
+                    },
+                    UpdateExpression="SET CategoryCounts.#oldCategory = if_not_exists(CategoryCounts.#oldCategory, :one) - :one, CategoryCounts.#newCategory = if_not_exists(CategoryCounts.#newCategory, :zero) + :one",
+                    ExpressionAttributeNames={
+                        '#oldCategory': oldCategory,
+                        '#newCategory': newCategory
+                    },
+                    ExpressionAttributeValues={
+                        ':zero': decimal.Decimal(0),
+                        ':one': decimal.Decimal(1)
+                    },
+                    ReturnValues="UPDATED_NEW"
+                )
+
+                print('response: ' + str(response))    
+        
+
+    return 'Successfully processed {} records.'.format(len(event['Records']))
+    
+```
+
+We've added the following:
+
+
+```python
+
+elif oldImage is not None and newImage is not None:
+
+            # This is the update case
+            mapIdObj = oldImage['MapId']
+            mapId = mapIdObj['S']
+
+            oldCategoryObj = oldImage['Category']
+            oldCategory = oldCategoryObj['S']
+
+            newCategoryObj = newImage['Category']
+            newCategory = newCategoryObj['S']
+
+            print('MapId: ' + mapId)
+            print('OldCategory: ' + oldCategory)
+            print('NewCategory: ' + newCategory)
+
+            # Only do this if the category changed
+            if oldCategory != newCategory:
+
+                # Default the CategoryCounts to an empty object
+                response = maps.update_item(
+                    Key={
+                        'MapId': mapId
+                    },
+                    UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                    ExpressionAttributeValues={
+                        ':val': {}
+                    },
+                    ReturnValues="NONE"
+                )
+                
+                # Decrement the count of the old category, and increment the count of the new category; don't change TotalPoints
+                response = maps.update_item(
+                    Key={
+                        'MapId': mapId
+                    },
+                    UpdateExpression="SET CategoryCounts.#oldCategory = if_not_exists(CategoryCounts.#oldCategory, :one) - :one, CategoryCounts.#newCategory = if_not_exists(CategoryCounts.#newCategory, :zero) + :one",
+                    ExpressionAttributeNames={
+                        '#oldCategory': oldCategory,
+                        '#newCategory': newCategory
+                    },
+                    ExpressionAttributeValues={
+                        ':zero': decimal.Decimal(0),
+                        ':one': decimal.Decimal(1)
+                    },
+                    ReturnValues="UPDATED_NEW"
+                )
+
+                print('response: ' + str(response))    
+                
+```
+
+Now, if an old image and new image exist, we're going to see if the category has changed. If it has, we'll decrement the category count of the old category, and increment the count of the new category.
+
+Try it out. Change the category of the SpaceNeedle. I changed it from "Landmark" to "Icon":
+
+Seattle Map Before:
+```
+{
+  "CategoryCounts": {
+    "Landmark": 1,
+    "Restaurant": 0
+  },
+  "City": "Seattle",
+  "Country": "US",
+  "MapId": "SeattleMapId",
+  "State": "WA",
+  "TotalPoints": 1
+}
+```
+
+Seattle Map After:
+```
+{
+  "CategoryCounts": {
+    "Icon": 1,
+    "Landmark": 0,
     "Restaurant": 0
   },
   "City": "Seattle",
