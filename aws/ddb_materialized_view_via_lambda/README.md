@@ -27,7 +27,16 @@ From [DynamoDB Stream Docs](http://docs.aws.amazon.com/amazondynamodb/latest/dev
 > Each stream record appears exactly once in the stream.
 > For each item that is modified in a DynamoDB table, the stream records appear in the same sequence as the actual modifications to the item.
 > DynamoDB Streams writes stream records in near real time, so that you can build applications that consume these streams and take action based on the contents.
-
+>
+> A stream consists of stream records. Each stream record represents a single data modification in the DynamoDB table to which the stream belongs. Each stream record is assigned a sequence number, reflecting the order in which the record was published to the stream.
+>
+> Stream records are organized into groups, or shards. Each shard acts as a container for multiple stream records, and contains information required for accessing and iterating through these records. The stream records within a shard are removed automatically after 24 hours.
+>
+> Shards are ephemeral: They are created and deleted automatically, as needed. Any shard can also split into multiple new shards; this also occurs automatically. (Note that it is also possible for a parent shard to have just one child shard.) A shard might split in response to high levels of write activity on its parent table, so that applications can process records from multiple shards in parallel.
+>
+> Because shards have a lineage (parent and children), applications must always process a parent shard before it processes a child shard. This will ensure that the stream records are also processed in the correct order. (If you use the DynamoDB Streams Kinesis Adapter, this is handled for you: Your application will process the shards and stream records in the correct order, and automatically handle new or expired shards, as well as shards that split while the application is running. For more information, see Using the DynamoDB Streams Kinesis Adapter to Process Stream Records.)
+>
+> ![Shard Visualization - from AWS Docs](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/images/streams-terminology.png "Shard Visualization")
 
 Overview
 -----------------------
