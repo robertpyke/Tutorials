@@ -1108,53 +1108,54 @@ We've added the following:
 
 elif oldImage is not None and newImage is not None:
 
-            # This is the update case
-            mapIdObj = oldImage['MapId']
-            mapId = mapIdObj['S']
+    # This is the update case
+    mapIdObj = oldImage['MapId']
+    mapId = mapIdObj['S']
 
-            oldCategoryObj = oldImage['Category']
-            oldCategory = oldCategoryObj['S']
+    oldCategoryObj = oldImage['Category']
+    oldCategory = oldCategoryObj['S']
 
-            newCategoryObj = newImage['Category']
-            newCategory = newCategoryObj['S']
+    newCategoryObj = newImage['Category']
+    newCategory = newCategoryObj['S']
 
-            print('MapId: ' + mapId)
-            print('OldCategory: ' + oldCategory)
-            print('NewCategory: ' + newCategory)
+    print('MapId: ' + mapId)
+    print('OldCategory: ' + oldCategory)
+    print('NewCategory: ' + newCategory)
 
-            # Only do this if the category changed
-            if oldCategory != newCategory:
+    # Only do this if the category changed
+    if oldCategory != newCategory:
 
-                # Default the CategoryCounts to an empty object
-                response = maps.update_item(
-                    Key={
-                        'MapId': mapId
-                    },
-                    UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
-                    ExpressionAttributeValues={
-                        ':val': {}
-                    },
-                    ReturnValues="NONE"
-                )
-                
-                # Decrement the count of the old category, and increment the count of the new category; don't change TotalPoints
-                response = maps.update_item(
-                    Key={
-                        'MapId': mapId
-                    },
-                    UpdateExpression="SET CategoryCounts.#oldCategory = if_not_exists(CategoryCounts.#oldCategory, :one) - :one, CategoryCounts.#newCategory = if_not_exists(CategoryCounts.#newCategory, :zero) + :one",
-                    ExpressionAttributeNames={
-                        '#oldCategory': oldCategory,
-                        '#newCategory': newCategory
-                    },
-                    ExpressionAttributeValues={
-                        ':zero': decimal.Decimal(0),
-                        ':one': decimal.Decimal(1)
-                    },
-                    ReturnValues="UPDATED_NEW"
-                )
+        # Default the CategoryCounts to an empty object
+        response = maps.update_item(
+            Key={
+                'MapId': mapId
+            },
+            UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+            ExpressionAttributeValues={
+                ':val': {}
+            },
+            ReturnValues="NONE"
+        )
 
-                print('response: ' + str(response))    
+        # Decrement the count of the old category, and increment the count of the new category; don't change TotalPoints
+        response = maps.update_item(
+            Key={
+                'MapId': mapId
+            },
+            UpdateExpression="SET CategoryCounts.#oldCategory = if_not_exists(CategoryCounts.#oldCategory, :one) - :one, CategoryCounts.#newCategory = if_not_exists(CategoryCounts.#newCategory, :zero) + :one",
+            ExpressionAttributeNames={
+                '#oldCategory': oldCategory,
+                '#newCategory': newCategory
+            },
+            ExpressionAttributeValues={
+                ':zero': decimal.Decimal(0),
+                ':one': decimal.Decimal(1)
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+
+        print('response: ' + str(response))    
+            
                 
 ```
 
