@@ -680,3 +680,72 @@ Once you've added the points, your "TownsvilleMapId" Map should look like this:
 #### Lamdba Increment Points Per Category
 
 It's nice to have the TotalPoints available directly from the Map, but I would like to have a better understanding of the different types of places we have in each city. Let's modify the roll-up to express the per-category sums.
+
+```
+
+from __future__ import print_function
+import json
+import decimal
+from boto3 import resource
+from boto3.dynamodb.conditions import Key
+
+print('Loading function')
+
+dynamodb_resource = resource('dynamodb')
+maps = dynamodb_resource.Table('Map')
+
+def lambda_handler(event, context):
+    print('Received event: ' + json.dumps(event, indent=2))
+    for record in event['Records']:
+        print(record['eventID'])
+        print(record['eventName'])
+        
+        # Determine the map associated with this point
+        dynamodbRecord = record['dynamodb']
+        oldImage = dynamodbRecord.get('OldImage')
+        newImage = dynamodbRecord.get('NewImage')
+        
+        # Only add a point to the Map summary when a point is added
+        # Note: We're not yet handling deletes, but we are skipping updates.
+        if oldImage is None and newImage is not None:
+            mapIdObj = newImage['MapId']
+            mapId = mapIdObj['S']
+
+            categoryObj = newImage['Category']
+            category = categoryObj['S']
+
+            print('MapId: ' + mapId)
+            print('Category: ' + category)
+            
+            # Default the category counts (if it doesn't exist)
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                ExpressionAttributeValues={
+                    ':val': {}
+                },
+                ReturnValues="NONE"
+            )
+            
+            # Increment the total points count, and the category counts
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="ADD TotalPoints :inc, CategoryCounts.#category :inc",
+                ExpressionAttributeValues={
+                    ':inc': decimal.Decimal(1)
+                },
+                ExpressionAttributeNames={
+                    '#category': category
+                },
+                ReturnValues="UPDATED_NEW"
+            )
+
+            print('response: ' + str(response))   
+
+    return 'Successfully processed {} records.'.format(len(event['Records']))
+
+```
