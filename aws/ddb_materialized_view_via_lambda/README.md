@@ -265,7 +265,7 @@ Now click the refreh in the top-right corner.
 
 You should now see a view like this:
 
-![CF Template Editor](https://cdn.rawgit.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/CF%20Stack%20Image.png "CF Template Editor")
+![CF Template Editor](https://cdn.rawgit.com/robertpyke/Tutorials/933194ef/aws/ddb_materialized_view_via_lambda/CF%20Template%20View.png "CF Template Editor")
 
 Take a moment to look around in the designer; explore the components. If you edit anything, just remember to change the template back before proceeding.
 
