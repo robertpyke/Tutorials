@@ -1208,7 +1208,7 @@ Seattle Map After:
 
 ![CF Extreme Stack](https://cdn.rawgit.com/robertpyke/Tutorials/5bc44c97/aws/ddb_materialized_view_via_lambda/CF%20Extreme%20View.png "CF Extreme Stack")
 
-(cf_extreme.json](https://raw.githubusercontent.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/cf_extreme.json)
+[cf_extreme.json](https://raw.githubusercontent.com/robertpyke/Tutorials/master/aws/ddb_materialized_view_via_lambda/cf_extreme.json)
 
 ### MapTourismScoreRefresh function code
 
