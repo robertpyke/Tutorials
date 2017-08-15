@@ -1735,7 +1735,6 @@ Seattle Map After:
 ```
 
 ```python
-
 from __future__ import print_function
 import json
 import decimal
@@ -1806,14 +1805,18 @@ def processScanResponse(response):
 def updateMap(map):
     mapId = map['MapId']
     print('Updating map: ' + mapId)
-    country = map['Country']
-    state = map['State']
+    country = map.get('Country')
+    state = map.get('State')
     totalPoints = 0 if map.get('TotalPoints') is None else map['TotalPoints']
     
-    countryRecordObj = countries.get_item(Key={'Country': country})
-    countryRecord = countryRecordObj.get('Item')
-    stateRecordObj = states.get_item(Key={'Country': country, 'State': state})
-    stateRecord = stateRecordObj.get('Item')
+    countryRecord = None
+    stateRecord = None
+    if country is not None:
+        countryRecordObj = countries.get_item(Key={'Country': country})
+        countryRecord = countryRecordObj.get('Item')
+    if country is not None and state is not None:
+        stateRecordObj = states.get_item(Key={'Country': country, 'State': state})
+        stateRecord = stateRecordObj.get('Item')
 
     if countryRecord is None:
         countryRecord = {}
@@ -1823,7 +1826,7 @@ def updateMap(map):
     countryModifier = 1 if countryRecord.get('Modifier') is None else countryRecord['Modifier'] 
     stateModifier = 1 if stateRecord.get('Modifier') is None else stateRecord['Modifier']
 
-    tourismScore = totalPoints * countryModifier * stateModifier
+    tourismScore = decimal.Decimal(totalPoints) * decimal.Decimal(countryModifier) * decimal.Decimal(stateModifier)
 
     response = mapTourismScores.put_item(
        Item={
