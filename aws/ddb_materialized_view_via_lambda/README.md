@@ -971,8 +971,10 @@ def lambda_handler(event, context):
             mapIdObj = newImage['MapId']
             mapId = mapIdObj['S']
 
-            categoryObj = newImage['Category']
-            category = categoryObj['S']
+            categoryObj = newImage.get('Category')
+            category = 'None'
+            if categoryObj is not None:
+                category = categoryObj['S'] 
 
             print('MapId: ' + mapId)
             print('Category: ' + category)
@@ -1011,8 +1013,10 @@ def lambda_handler(event, context):
             mapIdObj = oldImage['MapId']
             mapId = mapIdObj['S']
 
-            categoryObj = oldImage['Category']
-            category = categoryObj['S']
+            categoryObj = oldImage.get('Category')
+            category = 'None'
+            if categoryObj is not None:
+                category = categoryObj['S'] 
 
             print('MapId: ' + mapId)
             print('Category: ' + category)
@@ -1052,11 +1056,15 @@ def lambda_handler(event, context):
             mapIdObj = oldImage['MapId']
             mapId = mapIdObj['S']
 
-            oldCategoryObj = oldImage['Category']
-            oldCategory = oldCategoryObj['S']
+            oldCategoryObj = oldImage.get('Category')
+            oldCategory = 'None'
+            if oldCategoryObj is not None:
+                oldCategory = oldCategoryObj['S'] 
 
-            newCategoryObj = newImage['Category']
-            newCategory = newCategoryObj['S']
+            newCategoryObj = newImage.get('Category')
+            newCategory = 'None'
+            if newCategoryObj is not None:
+                newCategory = newCategoryObj['S'] 
 
             print('MapId: ' + mapId)
             print('OldCategory: ' + oldCategory)
@@ -1098,6 +1106,7 @@ def lambda_handler(event, context):
         
 
     return 'Successfully processed {} records.'.format(len(event['Records']))
+    
     
 ```
 
