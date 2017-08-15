@@ -57,7 +57,7 @@ this README (cf.json).
 
 The following is a graphical view of the Cloudformation template:
 
-![CF Template](https://cdn.rawgit.com/robertpyke/Tutorials/af345960/aws/ddb_materialized_view_via_lambda/CF%20Template.png "CF Template")
+![CF Template](https://cdn.rawgit.com/robertpyke/Tutorials/76634afa/aws/ddb_materialized_view_via_lambda/CF%20Stack.png "CF Template")
 
 We'll step through each part of the provided cloud formation template.
 
