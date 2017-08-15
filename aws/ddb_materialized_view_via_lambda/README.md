@@ -1206,6 +1206,8 @@ Seattle Map After:
 
 ## A more extreme example
 
+![CF Extreme Stack](https://cdn.rawgit.com/robertpyke/Tutorials/5bc44c97/aws/ddb_materialized_view_via_lambda/CF%20Extreme%20View.png "CF Extreme Stack")
+
 ```javascript
 
 {
