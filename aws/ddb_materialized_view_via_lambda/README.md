@@ -24,8 +24,9 @@ From [DynamoDB Stream Docs](http://docs.aws.amazon.com/amazondynamodb/latest/dev
 >
 > DynamoDB Streams guarantees the following:
 >
-> Each stream record appears exactly once in the stream.
-> For each item that is modified in a DynamoDB table, the stream records appear in the same sequence as the actual modifications to the item.
+> 1. Each stream record appears exactly once in the stream.
+> 2. For each item that is modified in a DynamoDB table, the stream records appear in the same sequence as the actual modifications to the item.
+>
 > DynamoDB Streams writes stream records in near real time, so that you can build applications that consume these streams and take action based on the contents.
 >
 > A stream consists of stream records. Each stream record represents a single data modification in the DynamoDB table to which the stream belongs. Each stream record is assigned a sequence number, reflecting the order in which the record was published to the stream.
