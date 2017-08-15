@@ -16,7 +16,9 @@ DynamoDB stream to trigger a Lambda, which will generate a roll-up view.
 Background
 ------------
 
-From [DynamoDB Stream Docs](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html):
+I assume you're somewhat familiar with DynamoDB, Lambda, and CloudFormation. You won't need any detailed knowledge of these, before starting on this tutorial.
+
+Regarding the DynamoDB Stream, the following information is from the [DynamoDB Stream Docs](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) and aims to help you understand what it is, and how we can use it.
 
 > A DynamoDB stream is an ordered flow of information about changes to items in an Amazon DynamoDB table. When you enable a stream on a table, DynamoDB captures information about every modification to data items in the table.
 >
