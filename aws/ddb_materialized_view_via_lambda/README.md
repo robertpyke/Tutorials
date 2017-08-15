@@ -798,4 +798,4 @@ As we add points, our 'per-category' totals will now update.
 
 I'm now going to delete all our Maps and Points, and re-create them.
 
-![Maps with category roll-ups](https://cdn.rawgit.com/robertpyke/Tutorials/91ceca88/aws/ddb_materialized_view_via_lambda/MapsWithCategoryRollUps.png "Maps with category roll-ups"
+![Maps with category roll ups](https://cdn.rawgit.com/robertpyke/Tutorials/91ceca88/aws/ddb_materialized_view_via_lambda/MapsWithCategoryRollUps.png "Maps with category roll ups")
