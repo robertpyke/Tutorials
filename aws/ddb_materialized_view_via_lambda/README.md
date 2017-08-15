@@ -675,3 +675,8 @@ Once you've added the points, your "TownsvilleMapId" Map should look like this:
   "TotalPoints": 3
 }
 ```
+
+
+#### Lamdba Increment Points Per Category
+
+It's nice to have the TotalPoints available directly from the Map, but I would like to have a better understanding of the different types of places we have in each city. Let's modify the roll-up to express the per-category sums.
