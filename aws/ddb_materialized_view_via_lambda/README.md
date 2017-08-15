@@ -1193,3 +1193,613 @@ Seattle Map After:
   "TotalPoints": 1
 }
 ```
+
+
+## A more extreme example
+
+```javascript
+
+{
+  "Resources": {
+    "PointStreamSource": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "PointTable",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "PointCategoryRollUp",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "Metadata": {
+        "Comment": "This resources maps our PointCategoryRollUp Lambda to our Point table stream as a trigger."
+      }
+    },
+    "PointCategoryRollUp": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.lambda_handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Code": {
+          "ZipFile": {
+            "Fn::Join": [
+              "\n",
+              [
+                "from __future__ import print_function",
+                "import json",
+                "print('Loading function')",
+                "def lambda_handler(event, context):",
+                "    print('Received event: ' + json.dumps(event, indent=2))",
+                "    for record in event['Records']:",
+                "        print(record['eventID'])",
+                "        print(record['eventName'])",
+                "        print('DynamoDB Record: ' + json.dumps(record['dynamodb'], indent=2))",
+                "    return 'Successfully processed {} records.'.format(len(event['Records']))"
+              ]
+            ]
+          }
+        },
+        "Runtime": "python3.6",
+        "Timeout": "25",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource will execute our roll-up code, which will let us write summary data into the map."
+      }
+    },
+    "CategorySource": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "CategoryTable",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MapTourismScoreRefresh",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "Metadata": {
+        "Comment": "This resources maps our MapTourismScoreRefresh Lambda to our Category table streams as a trigger."
+      }
+    },
+    "StateSource": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "StateTable",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MapTourismScoreRefresh",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "Metadata": {
+        "Comment": "This resources maps our MapTourismScoreRefresh Lambda to our State table streams as a trigger."
+      }
+    },
+    "MapSource": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "MapTable",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MapTourismScoreRefresh",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "Metadata": {
+        "Comment": "This resources maps our MapTourismScoreRefresh Lambda to our Map table streams as a trigger."
+      }
+    },
+    "CountrySource": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "CountryTable",
+            "StreamArn"
+          ]
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "MapTourismScoreRefresh",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "Metadata": {
+        "Comment": "This resources maps our MapTourismScoreRefresh Lambda to our Country table streams as a trigger."
+      }
+    },
+    "MapTourismScoreRefresh": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.lambda_handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Code": {
+          "ZipFile": {
+            "Fn::Join": [
+              "\n",
+              [
+                "from __future__ import print_function",
+                "import json",
+                "print('Loading function')",
+                "def lambda_handler(event, context):",
+                "    print('Received event: ' + json.dumps(event, indent=2))",
+                "    for record in event['Records']:",
+                "        print(record['eventID'])",
+                "        print(record['eventName'])",
+                "        print('DynamoDB Record: ' + json.dumps(record['dynamodb'], indent=2))",
+                "    return 'Successfully processed {} records.'.format(len(event['Records']))"
+              ]
+            ]
+          }
+        },
+        "Runtime": "python3.6",
+        "Timeout": "25",
+        "TracingConfig": {
+          "Mode": "Active"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource will execute our map tourism score recalculation."
+      }
+    },
+    "MapTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "Map",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "MapId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "MapId",
+            "KeyType": "HASH"
+          }
+        ],
+        "StreamSpecification": {
+          "StreamViewType": "KEYS_ONLY"
+        },
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our top-level Map table (A map will have many points)."
+      }
+    },
+    "MapTourismScoreTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "MapTourismScore",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "MapId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "MapId",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our MapTourismScore table (This view will show the tourism score for the map)."
+      }
+    },
+    "PointTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "Point",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "MapId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "PointId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "MapId",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "PointId",
+            "KeyType": "RANGE"
+          }
+        ],
+        "StreamSpecification": {
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our Point table (A map will have many points)."
+      }
+    },
+    "CategoryTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "Category",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "Category",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "Category",
+            "KeyType": "HASH"
+          }
+        ],
+        "StreamSpecification": {
+          "StreamViewType": "KEYS_ONLY"
+        },
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our Category table (Points will have a category)."
+      }
+    },
+    "CountryTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "Country",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "Country",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "Country",
+            "KeyType": "HASH"
+          }
+        ],
+        "StreamSpecification": {
+          "StreamViewType": "KEYS_ONLY"
+        },
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our Country table (Points will have a country)."
+      }
+    },
+    "StateTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "State",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "Country",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "State",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "Country",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "State",
+            "KeyType": "RANGE"
+          }
+        ],
+        "StreamSpecification": {
+          "StreamViewType": "KEYS_ONLY"
+        },
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        }
+      },
+      "Metadata": {
+        "Comment": "This resource defines our Country table (Points will have a country)."
+      }
+    },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "root",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:*"
+                  ],
+                  "Resource": "arn:aws:logs:*:*:*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:PutItem"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "MapTourismScoreTable",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:Scan",
+                    "dynamodb:Query"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "MapTable",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "CategoryTable",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "StateTable",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "CountryTable",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "xray:PutTraceSegments",
+                    "xray:PutTelemetryRecords"
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:DescribeStream",
+                    "dynamodb:GetRecords",
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:ListStreams"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "PointTable",
+                        "StreamArn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "CategoryTable",
+                        "StreamArn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "MapTable",
+                        "StreamArn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "StateTable",
+                        "StreamArn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "CountryTable",
+                        "StreamArn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+```
+
+```python
+
+from __future__ import print_function
+import json
+import decimal
+from boto3 import resource
+from boto3.dynamodb.conditions import Key
+
+print('Loading function')
+
+dynamodb_resource = resource('dynamodb')
+
+maps = dynamodb_resource.Table('Map')
+states = dynamodb_resource.Table('State')
+countries = dynamodb_resource.Table('Country')
+categories = dynamodb_resource.Table('Category')
+mapTourismScores = dynamodb_resource.Table('MapTourismScore')
+
+def lambda_handler(event, context):
+    print('Received event: ' + json.dumps(event, indent=2))
+
+    mapId = None
+    
+    for record in event['Records']:
+        print(record['eventID'])
+        print(record['eventName'])
+        
+        # Determine the map associated with this point
+        dynamodbRecord = record['dynamodb']
+        keys = dynamodbRecord.get("Keys")
+
+        countryInputObj = keys.get("Country")
+        if countryInputObj:
+            modifiedCountry = countryInputObj['S'] 
+
+        stateInputObj = keys.get("State")
+        if stateInputObj:
+            modifiedstate = stateInputObj['S'] 
+
+        mapIdInputObj = keys.get("MapId")
+        if mapIdInputObj:
+            modifiedMapId = mapIdInputObj['S'] 
+
+        # If we have a map id, just look up the map
+        if modifiedMapId is not None:
+            mapObj = maps.get_item(Key={'MapId': modifiedMapId})
+            map = mapObj['Item']
+
+            country = map['Country']
+            state = map['State']
+            totalPoints = 0 if map.get('TotalPoints') is None else map['TotalPoints']
+            
+            countryRecordObj = countries.get_item(Key={'Country': country})
+            countryRecord = countryRecordObj.get('Item')
+            stateRecordObj = states.get_item(Key={'Country': country, 'State': state})
+            stateRecord = stateRecordObj.get('Item')
+
+            if countryRecord is None:
+                countryRecord = {}
+            if stateRecord is None: 
+                stateRecord = {} 
+
+            countryModifier = 1 if countryRecord.get('Modifier') is None else countryRecord['Modifier'] 
+            stateModifier = 1 if countryRecord.get('Modifier') is None else countryRecord['Modifier']
+
+            tourismScore = totalPoints * countryModifier * stateModifier
+
+            response = mapTourismScores.put_item(
+               Item={
+                    'MapId': modifiedMapId,
+                    'tourismScore': tourismScore
+                }
+            )
+
+        # else, scan for the properties we have
+
+    return 'Successfully processed {} records.'.format(len(event['Records']))
+```
