@@ -801,3 +801,120 @@ I'm now going to delete all our Maps and Points, and re-create them.
 After re-creating our original maps, and points, we can see that the maps have the correct roll-up values:
 
 ![Maps with category roll ups](https://cdn.rawgit.com/robertpyke/Tutorials/91ceca88/aws/ddb_materialized_view_via_lambda/MapsWithCategoryRollUps.png "Maps with category roll ups")
+
+#### Lamdba Decrement on Delete
+As noted earlier, we're not handling deletes. Let's update our code to handle deletes.
+
+To handle deletes, we'll need to look for the case where a newImage is None, but an oldImage exists.
+
+```
+from __future__ import print_function
+import json
+import decimal
+from boto3 import resource
+from boto3.dynamodb.conditions import Key
+
+print('Loading function')
+
+dynamodb_resource = resource('dynamodb')
+maps = dynamodb_resource.Table('Map')
+
+def lambda_handler(event, context):
+    print('Received event: ' + json.dumps(event, indent=2))
+    for record in event['Records']:
+        print(record['eventID'])
+        print(record['eventName'])
+        
+        # Determine the map associated with this point
+        dynamodbRecord = record['dynamodb']
+        oldImage = dynamodbRecord.get('OldImage')
+        newImage = dynamodbRecord.get('NewImage')
+        
+        # Only add a point to the Map summary when a point is added
+        # Note: We're not yet handling deletes, but we are skipping updates.
+        if oldImage is None and newImage is not None:
+            mapIdObj = newImage['MapId']
+            mapId = mapIdObj['S']
+
+            categoryObj = newImage['Category']
+            category = categoryObj['S']
+
+            print('MapId: ' + mapId)
+            print('Category: ' + category)
+
+            # Default the CategoryCounts to an empty object
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                ExpressionAttributeValues={
+                    ':val': {}
+                },
+                ReturnValues="NONE"
+            )
+            
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET TotalPoints = if_not_exists(TotalPoints, :zero) + :one,  CategoryCounts.#category = if_not_exists(CategoryCounts.#category, :zero) + :one",
+                ExpressionAttributeNames={
+                    '#category': category
+                },
+                ExpressionAttributeValues={
+                    ':zero': decimal.Decimal(0),
+                    ':one': decimal.Decimal(1)
+                },
+                ReturnValues="UPDATED_NEW"
+            )
+
+            print('response: ' + str(response))
+
+        elif oldImage is not None and newImage is None:
+            # This is the delete case
+            mapIdObj = oldImage['MapId']
+            mapId = mapIdObj['S']
+
+            categoryObj = oldImage['Category']
+            category = categoryObj['S']
+
+            print('MapId: ' + mapId)
+            print('Category: ' + category)
+
+            # Default the CategoryCounts to an empty object
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET CategoryCounts = if_not_exists(CategoryCounts, :val)",
+                ExpressionAttributeValues={
+                    ':val': {}
+                },
+                ReturnValues="NONE"
+            )
+            
+            # Decrement the counts (default to one, if they don't exist)
+            response = maps.update_item(
+                Key={
+                    'MapId': mapId
+                },
+                UpdateExpression="SET TotalPoints = if_not_exists(TotalPoints, :one) - :one,  CategoryCounts.#category = if_not_exists(CategoryCounts.#category, :one) - :one",
+                ExpressionAttributeNames={
+                    '#category': category
+                },
+                ExpressionAttributeValues={
+                    ':one': decimal.Decimal(1)
+                },
+                ReturnValues="UPDATED_NEW"
+            )
+
+            print('response: ' + str(response))	
+        
+
+    return 'Successfully processed {} records.'.format(len(event['Records']))
+```
+
+Now, when a point is deleted, the TotalPoints, and CategoryCounts, should be decremented.
+
+Let's test it. We'll delete a single point from Seattle (which should currently have 2 points).
