@@ -917,4 +917,18 @@ def lambda_handler(event, context):
 
 Now, when a point is deleted, the TotalPoints, and CategoryCounts, should be decremented.
 
-Let's test it. We'll delete a single point from Seattle (which should currently have 2 points).
+Let's test it. We'll delete a single point from Seattle (which should currently have 2 points). We'll delete the point with id "PalaceKitchenId". Take a look at the Seattle Map before deleting the point. You should currently have 1 Landmark, and 1 Restaurant (you may have more landmarks if you've been executing the test event for your Lambda). Once you delete the PalaceKitchen, the number of TotalPoints should decrement, and the category counts of Restaurants should have decremented to 0.
+
+```json
+{
+  "CategoryCounts": {
+    "Landmark": 1,
+    "Restaurant": 0
+  },
+  "City": "Seattle",
+  "Country": "US",
+  "MapId": "SeattleMapId",
+  "State": "WA",
+  "TotalPoints": 1
+}
+```
