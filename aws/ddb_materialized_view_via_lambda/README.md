@@ -793,3 +793,7 @@ If it is set, this action will no-op. We need CategoryCounts to exist before we 
 The above code now performs two actions, it increments TotalPoints by one, but it also indexes into the CategoryCounts obj, and increments the specific category count. This update leverages the aforementioned atomic counter property.
 
 Note that we can use # to define a key within our object property.
+
+As we add points, our 'per-category' totals will now update.
+
+I'm now going to delete all our Maps and Points, and re-create them.
