@@ -306,7 +306,9 @@ We should now see "Map", and "Point".
 
 Click on the "Map" table, and select the "Items" tab.
 
-Create a "Seattle" map:
+Click "Create item".
+
+Create a "Seattle" map (use the Text view, instead of the Tree view):
 
 ```json
 {
