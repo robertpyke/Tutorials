@@ -1263,6 +1263,11 @@ def lambda_handler(event, context):
         else:
             print("DOING SCANS")
             # else, scan for the properties we have
+            # TODO -> We don't actually filter by the properties we know are changing..
+            # e.g. if the Country "US" changed, we don't need to update "AUS" data.
+            # We would pay for the RU in dynamo (as we aren't filtering on our key),
+            # but it would reduce post-processing.
+            # Consider this an exercise for the reader ;)
             response = maps.scan()
             processScanResponse(response)
 
