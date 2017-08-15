@@ -1785,6 +1785,7 @@ def lambda_handler(event, context):
                     ExclusiveStartKey=response['LastEvaluatedKey']
                 )
                 processScanResponse(response)
+            return 'Performed Scan - exiting early'
 
     return 'Successfully processed {} records.'.format(len(event['Records']))
 
