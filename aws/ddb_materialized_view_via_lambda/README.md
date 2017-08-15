@@ -807,7 +807,8 @@ As noted earlier, we're not handling deletes. Let's update our code to handle de
 
 To handle deletes, we'll need to look for the case where a newImage is None, but an oldImage exists.
 
-```
+```python
+
 from __future__ import print_function
 import json
 import decimal
