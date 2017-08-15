@@ -1746,7 +1746,6 @@ mapTourismScores = dynamodb_resource.Table('MapTourismScore')
 def lambda_handler(event, context):
     print('Received event: ' + json.dumps(event, indent=2))
 
-    mapId = None
     
     for record in event['Records']:
         print(record['eventID'])
@@ -1765,6 +1764,7 @@ def lambda_handler(event, context):
             modifiedstate = stateInputObj['S'] 
 
         mapIdInputObj = keys.get("MapId")
+        modifiedMapId = None
         if mapIdInputObj:
             modifiedMapId = mapIdInputObj['S'] 
 
@@ -1772,34 +1772,56 @@ def lambda_handler(event, context):
         if modifiedMapId is not None:
             mapObj = maps.get_item(Key={'MapId': modifiedMapId})
             map = mapObj['Item']
+            updateMap(map)
 
-            country = map['Country']
-            state = map['State']
-            totalPoints = 0 if map.get('TotalPoints') is None else map['TotalPoints']
-            
-            countryRecordObj = countries.get_item(Key={'Country': country})
-            countryRecord = countryRecordObj.get('Item')
-            stateRecordObj = states.get_item(Key={'Country': country, 'State': state})
-            stateRecord = stateRecordObj.get('Item')
+        else:
+            print("DOING SCANS")
+            # else, scan for the properties we have
+            response = maps.scan()
+            processScanResponse(response)
 
-            if countryRecord is None:
-                countryRecord = {}
-            if stateRecord is None: 
-                stateRecord = {} 
-
-            countryModifier = 1 if countryRecord.get('Modifier') is None else countryRecord['Modifier'] 
-            stateModifier = 1 if countryRecord.get('Modifier') is None else countryRecord['Modifier']
-
-            tourismScore = totalPoints * countryModifier * stateModifier
-
-            response = mapTourismScores.put_item(
-               Item={
-                    'MapId': modifiedMapId,
-                    'tourismScore': tourismScore
-                }
-            )
-
-        # else, scan for the properties we have
+            while 'LastEvaluatedKey' in response:
+                response = table.scan(
+                    ExclusiveStartKey=response['LastEvaluatedKey']
+                )
+                processScanResponse(response)
 
     return 'Successfully processed {} records.'.format(len(event['Records']))
+
+def processScanResponse(response):
+    print('scan response: ' + str(response))
+    for map in response['Items']:
+        updateMap(map)
+
+def updateMap(map):
+    mapId = map['MapId']
+    print('Updating map: ' + mapId)
+    country = map['Country']
+    state = map['State']
+    totalPoints = 0 if map.get('TotalPoints') is None else map['TotalPoints']
+    
+    countryRecordObj = countries.get_item(Key={'Country': country})
+    countryRecord = countryRecordObj.get('Item')
+    stateRecordObj = states.get_item(Key={'Country': country, 'State': state})
+    stateRecord = stateRecordObj.get('Item')
+
+    if countryRecord is None:
+        countryRecord = {}
+    if stateRecord is None: 
+        stateRecord = {} 
+
+    countryModifier = 1 if countryRecord.get('Modifier') is None else countryRecord['Modifier'] 
+    stateModifier = 1 if stateRecord.get('Modifier') is None else stateRecord['Modifier']
+
+    tourismScore = totalPoints * countryModifier * stateModifier
+
+    response = mapTourismScores.put_item(
+       Item={
+            'MapId': mapId,
+            'tourismScore': tourismScore
+        }
+    )
+
+    return response
+
 ```
