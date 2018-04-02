@@ -1,0 +1,5 @@
+#define SECRET_SSID "Guest"
+#define SECRET_PASS ""
+#define AWS_EP ""
+#define MQTT_IP ""
+#define THING_NAME ""
