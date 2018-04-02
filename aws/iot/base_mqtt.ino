@@ -86,7 +86,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     } else {
       Serial.println("parseObject() parsed it real good");
     }
-    // TODO: Do something with root["state"]
+    // Do something with root["state"]
   }
 }
 
@@ -124,6 +124,7 @@ void loop() {
   }
   delay(500);
   Serial.println("looping..");
+  // Loop our client (check for outstanding messages, etc.)
   client.loop();
 }
 
