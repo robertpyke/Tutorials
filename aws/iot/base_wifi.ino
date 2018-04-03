@@ -8,8 +8,6 @@ char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as k
 int status = WL_IDLE_STATUS;  // the WiFi radio's status
 
 void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
   
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
