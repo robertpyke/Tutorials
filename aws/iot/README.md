@@ -242,3 +242,7 @@ task 3
 ------
 
 Read the value of the LED pin in the main loop. Don't cheat... actually do it. I'll know if you didn't.
+
+Notice anything, is your bored rate increasing (*get it, it's punny, 50% of my time is spent on these jokes*)? The LED value isn't changing.
+
+![task3-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task3-complete.png "Task 3 Complete")
