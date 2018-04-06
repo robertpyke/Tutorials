@@ -138,3 +138,60 @@ Here we see a loop. While the device is not connected to wifi, it loops, attempt
 This is the first time you're seeing Serial.print (and Serial.println). Serial.print(ln) is printing to the Serial port (as we discussed before). When you run this code, you'll be able to see these "print statements" in the serial monitor.
 
 If you're attempting to connect to a network without password protection, remove the pass argument.
+
+```c
+  // you're connected now, so print out the data:
+  Serial.print("You're connected to the network");
+
+  // Allow the hardware to sort itself out
+  delay(1500);
+
+  printWiFiData();
+```
+
+Once the wifi connect loop finishes, the device is connected. We print that we're connected, then sleep for 1500 ms (1.5 seconds), before printing the wifi information. Once we print the wifi data, the setup function is complete. The device will then start looping on the <code>loop()</code> function.
+
+Before we move to the <code>loop</code> function, let's look at the <code>printWifiData</code> function:
+
+```c
+
+void printWiFiData() {
+  // print the SSID of the network you're attached to:
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+
+  // print your WiFi shield's IP address:
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);
+
+  // print the MAC address of the router you're attached to:
+  byte bssid[6];
+  WiFi.BSSID(bssid);
+  Serial.print("BSSID: ");
+  Serial.print(bssid[5], HEX);
+  Serial.print(":");
+  Serial.print(bssid[4], HEX);
+  Serial.print(":");
+  Serial.print(bssid[3], HEX);
+  Serial.print(":");
+  Serial.print(bssid[2], HEX);
+  Serial.print(":");
+  Serial.print(bssid[1], HEX);
+  Serial.print(":");
+  Serial.println(bssid[0], HEX);
+
+  // print the received signal strength:
+  long rssi = WiFi.RSSI();
+  Serial.print("signal strength (RSSI):");
+  Serial.println(rssi);
+
+  // print the encryption type:
+  byte encryption = WiFi.encryptionType();
+  Serial.print("Encryption Type:");
+  Serial.println(encryption, HEX);
+  Serial.println();
+}
+```
+
+This sample code is provided by the Wifi101 module. This function prints general information about the wifi connection. The main thing I want to draw your attention to is the *rssi*. We'll use this later in the lab. The *rssi* is the "received signal strength indicator" of the Wifi connection. This number will be negative, and the closer the value is to 0, the stronger the wifi connection.
