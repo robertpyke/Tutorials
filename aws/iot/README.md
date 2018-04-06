@@ -796,4 +796,23 @@ void loop() {
 ```
 ![task12-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task12-complete.png "Task 12 Complete")
 
-At this point, assuming you did something like the above, you'll be sending your device state to IOT, and you'll be receiving deltas whenever the shadow is updated so that it no longer matches the reported. At this point, we're only missing one key thing...
+At this point, assuming you did something like the above, you'll be sending your device state to IOT, and you'll be receiving deltas whenever the shadow is updated so that it no longer matches the reported. Your LED should turn on/off as you set the pin0 value in the desired. The pin0 value should be updated in the reported section, along with the rssi value. At this point, we're only missing one key thing... we don't read the initial delta. If a delta is reported while you're not on MQTT, you won't see it. Let's fix that.
+
+Get Desired in Connect/Reconnect
+==================================
+
+As noted above, we don't read the initial state when we connect. It's entirely possible for an IOT device to lose connection for a long time (let's say it's a solar device, and it shuts down overnight). Let's make it so our device asks for the shadow state when it first connects. We do this by publishing an empty message to our get topic - [device shadow mqtt docs](https://docs.aws.amazon.com/iot/latest/developerguide/device-shadow-mqtt.html#get-pub-sub-topic). AWS IOT will respond to the message with the current state of the device.
+
+```c
+Serial.println("refreshing state..");
+client.publish("$aws/things/" THING_NAME "/shadow/get", "");
+```
+
+Task 13
+----------
+
+Using the above, trigger a state refresh whenever you need to reconnect your MQTT (including the first time connect).
+
+You should see something like:
+
+![task13-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task13-complete.png "Task 13 Complete")
