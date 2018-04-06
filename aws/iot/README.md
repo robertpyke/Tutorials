@@ -107,7 +107,7 @@ Let's go into each section, and briefly discuss what's happening.
   }
 ```
 
-In this section, we're opening the serial port. The serial port allows for us to communicate to/from the board. The arduino IDE has a serial monitor, that will let us see the serial output from the board. For this project, we'll use the serial port as a logger, letting us watch what's happening on the board. 9600 is the baud rate (9600 bits/second).
+In this section, we're opening the serial port. The serial port allows for us to communicate to/from the board. The arduino IDE has a serial monitor, that will let us see the serial output from the board. For this project, we'll use the serial port as a logger, letting us watch what's happening on the board. 9600 is the baud rate (9600 bits/second). Baud rate should not be confused with bored rate, which is how quickly you get bored of these labs; or board rate, which is the rate at which ardunio boards are released.
 
 ```c
  // check for the presence of the shield:
