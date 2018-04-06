@@ -620,6 +620,34 @@ void loop() {
 
 This <code>reconnect</code> function manages connecting to our MQTT endpoint, and subscribing to the MQTT topics. If you lose network connection, the reconnect function will get you back onto the MQTT topics.
 
+```c
+void callback(char* topic, byte* payload, unsigned int length) {
+  Serial.println("MQTT Callback");
+  char buf[length];
+
+  strncpy(buf, (const char *)payload, length);
+  buf[length] = '\0'; // Ensure null termination.
+
+  Serial.println(topic);
+  Serial.println(buf);
+
+  if (String(topic) == "$aws/things/" THING_NAME "/shadow/update/delta") {
+    StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
+    JsonObject& root = jsonBuffer.parseObject(buf);
+    // Test if parsing succeeds.
+    if (!root.success()) {
+      Serial.println("parseObject() failed");
+      return;
+    } else {
+      Serial.println("parseObject() parsed it real good");
+    }
+    // Do something with root["state"]
+  }
+}
+```
+
+Okay, this looks a little more hairy. It's actually just a basic callback. Whenever the MQTT topics we're subscribed to receives a message, our callback runs, and deserializes the message. The <code>root</code> is a parsed JSON object root. We'll expand upon this callback later.
+
 Task 8
 ---------
 
