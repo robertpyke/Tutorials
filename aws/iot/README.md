@@ -762,3 +762,38 @@ First, let's look at how to publish an MQTT message:
 ```
 
 In the above, we are formatting a json message to send to the MQTT <code>publishTopic</code>.
+
+Task 12
+--------------
+
+Update your code to put the publish in your main loop. Don't publish every loop though, only publish one in every 10 (or so) loops. If you do it every loop, it'll break. Why? Because you'll be receiving an accept for every publish, and you'll fall behind in the MQTT receive (<code>client.loop()</code>). Don't stress it if you don't understand, just trust me, and publish on every 10 iterations.
+
+*Cheat Code Entered* - **SPOILER ALERT**
+
+```c
+int count = 0;
+void loop() {
+  count++;
+  if (!client.connected()) {
+    reconnect();
+  }
+  delay(100);
+  Serial.println("looping..");
+  // Loop our client (check for outstanding messages, etc.)
+  client.loop();
+
+  if (count >= 10) {
+    Serial.println("publish state..");
+    sprintf(publishPayload, "{\"state\":{\"reported\":{\"pin0\":%d, \"rssi\":%d }},\"clientToken\":\"%s\"}",
+      digitalRead(LED_BUILTIN),
+      WiFi.RSSI(),
+      clientId
+    );
+    client.publish(publishTopic, publishPayload);
+    count = 0;
+  }
+}
+```
+![task12-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task12-complete.png "Task 12 Complete")
+
+At this point, assuming you did something like the above, you'll be sending your device state to IOT, and you'll be receiving deltas whenever the shadow is updated so that it no longer matches the reported. At this point, we're only missing one key thing...
