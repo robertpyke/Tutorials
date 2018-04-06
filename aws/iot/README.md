@@ -557,6 +557,69 @@ You'll also need to update the following values in your arduino_secrets.h file:
 
 If you're lucky enough to be in a physical lab with me, doing this, you should get the real values we'll be using. I've already set up some specific things for you.
 
+I'm going to briefly go over the above code:
+```c
+  PubSubClient client(wifiClient);
+```
+<code>client</code> is our MQTT client. It is a [PubSubClient](https://pubsubclient.knolleary.net/api.html). It uses our existing wifi client.
+
+```c
+  char publishTopic[]   = "$aws/things/" THING_NAME "/shadow/update";
+```
+<code>publishTopic</code> is the MQTT topic we will send device updates to. This will be where our IOT device reports its real status to (which updates the device shadow).
+
+```c
+char *subscribeTopic[5] = {
+  "$aws/things/" THING_NAME "/shadow/update/accepted",
+  "$aws/things/" THING_NAME "/shadow/update/rejected",
+  "$aws/things/" THING_NAME "/shadow/update/delta",
+  "$aws/things/" THING_NAME "/shadow/get/accepted",
+  "$aws/things/" THING_NAME "/shadow/get/rejected"
+};
+```
+These are topics we'll listen on. Each topic has a different use case. In a real application, you would only listen to topics you intended to act on.
+
+We're going to ignore all of these for the moment, except the <code>update/delta</code>. The delta topic tells us the difference between the desired state of a device, and the reported (actual) state. Let's say you set the desired state for the LED to on, but the reported LED state is off. A delta will be sent to the device. If the device's reported and the desired state are in alignment, no delta message will be sent.
+
+```c
+void reconnect() {
+  // Loop until we're reconnected
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    // Attempt to connect
+    if (client.connect(clientId)) {
+      Serial.println("connected");
+
+      for (int i = 0; i < 5; i++) {
+        Serial.print("Subscribing to: ");
+        Serial.print(subscribeTopic[i]);
+        if (client.subscribe(subscribeTopic[i]), 1) {
+          Serial.println(" ... succeeded");
+        } else {
+          Serial.println(" ... failed");
+        }
+      }
+
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
+}
+
+voic loop() {
+  if (!client.connected()) {
+    reconnect();
+  }
+  ...
+}
+```
+
+This function manages connecting to our MQTT endpoint, and subscribing to the MQTT topics. If you lose network connection, the reconnect function will get you back onto the MQTT topics.
+
 Task 8
 ---------
 
