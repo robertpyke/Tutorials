@@ -363,3 +363,13 @@ Task 7
 ---------
 
 You already know how to perform a digital read, and now you know how to write to the LED. Rather than logging the sensor value when you read it, let's set the LED to on/off, based on the sensor value. Consider using a shorter delay for this loop (now you're not printing) - 10ms should be good.
+
+At this point, you should be reading a sensor value, and turning on/off the LED based on that sensor value.
+
+Updating your IOT shadow
+==========================
+
+You have an internet connected device, and you're in a tutorial folder called aws/iot... hopefully you saw this coming... it's time to start sharing to the world the value of your inner most pins (using AWS IOT).
+
+We're going to first get your device an established MQTT client connection to AWS IOT. MQTT is a lightweight protocol for sending data. In this case, we'll use MQTT to send messages to AWS IOT, and to read messages from AWS IOT.
+
