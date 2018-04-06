@@ -264,6 +264,9 @@ The sensor has a VCC, GND, and DO pin.
 - GND is the ground pin, and
 - DO is the digital out pin.
 
+Connect the **VCC** pin on the sensor, to the **VCC** pin of the board.
+Connect the **GND** pin on the sensor, to the **GND** pin of the board.
+Connect the **DO** pin on the sensor, to the **0** pin of the board.
 
-
+Once the VCC and GND pins are connected, if your sensor has a status LED, it'll probably light up.
 
