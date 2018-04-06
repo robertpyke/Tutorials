@@ -726,7 +726,7 @@ void setup() {
 }
 ```
 
-Now when you receive a new desired state for pin0, update the LED to match the value:
+Then update your callback, so that when you receive a new desired state for pin0, you update the LED to match the value:
 ```c
     ...
     // Check that the JSON object has everything we want/need
@@ -740,3 +740,7 @@ Now when you receive a new desired state for pin0, update the LED to match the v
       Serial.println(pin0Value); 
     }
 ```
+
+Run the code, and then update your desired value for pin0 between 0 and 1. You should see the LED turn on/off.
+
+![task11-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task11-complete.png "Task 11 Complete")
