@@ -834,4 +834,6 @@ At this point, you're done with the Lab - these are just some extensions if you'
 
 Add a IOT rule, and publish rssi to CloudWatch... The rules are managed through the "Act" interface in IOT. You can find an example on THING_1 (if you're in the lab with me).
 
-
+![rule-creation-1](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/rule-creation-1.png "rule-creation-1")
+![rule-creation-2](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/rule-creation-2.png "rule-creation-2")
+![rule-metric](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/rule-metric.png "rule-metric")
