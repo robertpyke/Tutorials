@@ -685,8 +685,6 @@ Respond to Delta
 
 You received a message telling you that your pin has a different desired value, to what you reported.
 
-Let's update our code to set the pin to the desired value.
-
 First, we'll just get the value out of the JSON, and make sure we're parsing everything correctly:
 ```c
     ...
@@ -699,11 +697,46 @@ First, we'll just get the value out of the JSON, and make sure we're parsing eve
     }
 ```
 
-We should be seeing the output:
+Task 10
+---------
+
+Let's update our code to read the desired pin0 value. Assuming you leveraged the code above, you should be seeing the following output when you update the shadow:
 ```
 MQTT Callback
 $aws/things/THING_1/shadow/update/delta
 {"version":3632,"timestamp":1522998303,"state":{"pin0":1},"metadata":{"pin0":{"timestamp":1522998303}}}
 parseObject() parsed it real good
 Pin 0, desired: 1
+```
+
+Task 11
+-----------
+
+Let's use pin0 (when talking with AWS), as a proxy for the LED. If you have a real output device (e.g. a buzzer), you can use that instead.
+
+In our setup, update your code to use the LED as an output again.
+
+```c
+void setup() {
+  ...
+  
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+  ...
+}
+```
+
+Now when you receive a new desired state for pin0, update the LED to match the value:
+```c
+    ...
+    // Check that the JSON object has everything we want/need
+    if (root["state"].success() && root["state"]["pin0"].success() && root["state"]["pin0"].is<int>()) {
+      // Pull out pin0 as an int.
+      int pin0Value = root["state"]["pin0"].as<int>();
+      Serial.print("Pin 0, desired: ");
+      Serial.println(pin0Value);
+      digitalWrite(LED_BUILTIN, pin0Value);
+      Serial.print("LED set to: ");
+      Serial.println(pin0Value); 
+    }
 ```
