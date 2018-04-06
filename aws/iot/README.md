@@ -672,6 +672,8 @@ Change the desired state for a pin. For example:
  }
 ```
 
+![task9-progress-1](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task9-progress-1.png "Task 9 In-Progress 1")
+
 As you hit save, keep an eye on the serial monitor for your device. Assuming you're updating the device you're subscribed to, you should see a couple of messages:
 
 ![task9-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task9-complete.png "Task 9 Complete")
