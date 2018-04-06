@@ -845,3 +845,12 @@ Add a IOT rule, and publish rssi to CloudWatch... The rules are managed through 
 ![rule-creation-1](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/rule_creation_1.png "rule-creation-1")
 ![rule-creation-2](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/rule_creation_2.png "rule-creation-2")
 ![rule-metric](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/rule_metric.png "rule-metric")
+
+Task 18
+--------
+
+Some more ideas...?
+
+- Graph the audio-volume in a room over time using an analog audio sensor.
+- Graph the light in a room over time using an analog light sensor.
+
