@@ -215,7 +215,12 @@ Task 1
 
 Okay, you've had a breif explanation of the main parts of the file. You should have a sketch with one main .ino file, and an arduino_secrets.h file. Your first task, update the .h file, and the .ino file, with the correct Wifi SSID/PASS. If the wifi doesn't have a password, don't forget to remove the pass paramater where indicated above. Once you've made those few changes, run the code, and make sure you're seeing the device connect to wifi, and then loop on the main loop.
 
+![task1-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task1-complete.png "Task 1 Complete")
+
+
 Task 2
 -------------
 
 Update the main loop to print the rssi. Play around with the board, and try to partially block the wifi connection. You should see the rssi value change. Feel free to tweak the <code>delay()</code> value, to print the rssi more frequently.
+
+![task2-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task2-complete.png "Task 2 Complete")
