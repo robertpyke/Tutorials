@@ -107,7 +107,7 @@ Let's go into each section, and briefly discuss what's happening.
   }
 ```
 
-In this section, we're opening the serial port. The serial port allows for us to communicate to/from the board. The arduino IDE has a serial monitor, that will let us see the serial output from the board. For this project, we'll use the serial port as a logger, letting us watch what's happening on the board. 9600 is the baud rate (9600 bits/second). Baud rate should not be confused with bored rate, which is how quickly you get bored of these labs; or board rate, which is the rate at which ardunio boards are released.
+In this section, we're opening the serial port. The serial port allows for us to communicate to/from the board. The arduino IDE has a serial monitor, that will let us see the serial output from the board. For this project, we'll use the serial port as a logger, letting us watch what's happening on the board. 9600 is the baud rate (9600 bits/second). Baud rate should not be confused with bored rate, which is how quickly you get bored of these labs, or board rate, which is the rate at which ardunio boards are released.
 
 ```c
  // check for the presence of the shield:
@@ -228,6 +228,9 @@ Update the main loop to print the rssi. Play around with the board, and try to p
 Reading Pins
 ============
 
+Reading the Built-in LED state
+----------------------------------
+
 In our previous section, we got our device connected to wifi, and printed our connection strength in the main loop. Let's start reading device pins. This is probably going to be super complic...
 
 ```c
@@ -238,7 +241,7 @@ In our previous section, we got our device connected to wifi, and printed our co
 .. *never mind*.. Turns out, reading pins is pretty easy. Digital read will read the value of a pin as a 0 (low) or 1 (high).
 In this example, we're reading the value of the built-in LED.
 
-task 3
+Task 3
 ------
 
 Read the value of the LED pin in the main loop. Don't cheat... actually do it. I'll know if you didn't.
@@ -246,3 +249,21 @@ Read the value of the LED pin in the main loop. Don't cheat... actually do it. I
 Notice anything, is your bored rate increasing (*get it, it's punny*)? The LED value isn't changing.
 
 ![task3-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task3-complete.png "Task 3 Complete")
+
+
+Reading Sensor Pins
+-----------------------
+
+In the previous section, we learnt how to read a pin, but it's always the same value. Let's introduce a sensor. We're going to focus on digital sensors, those that are either on, or off. In my example, I'm going to integrate a vibration sensor, but you can use any other digital sensor.
+
+Let's connect the sensor to the board. Disclaimer: You're about to be dealing with some low voltage electricity. If that makes you uncomfortable, don't continue.
+
+The sensor has a VCC, GND, and DO pin.
+
+- VCC is the voltage supply pin,
+- GND is the ground pin, and
+- DO is the digital out pin.
+
+
+
+
