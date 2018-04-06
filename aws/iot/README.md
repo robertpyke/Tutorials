@@ -556,3 +556,10 @@ You'll also need to update the following values in your arduino_secrets.h file:
 ```
 
 If you're lucky enough to be in a physical lab with me, doing this, you should get the real values we'll be using. I've already set up some specific things for you.
+
+Task 8
+---------
+
+Update the code above with your real values, and then run it. You should get the following:
+
+![task8-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task8-complete.png "Task 8 Complete")
