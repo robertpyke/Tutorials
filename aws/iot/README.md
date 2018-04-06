@@ -744,3 +744,21 @@ Then update your callback, so that when you receive a new desired state for pin0
 Run the code, and then update your desired value for pin0 between 0 and 1. You should see the LED turn on/off.
 
 ![task11-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task11-complete.png "Task 11 Complete")
+
+Update Reported
+================
+
+At this point we are receiving updates for our device, and we're internally responding to those updates, but we're not telling IOT our actual state. Let's create a periodic update function. We'll send some basic information ahout the device every so many loops. Again, I'm going to pretend my LED is pin0. So I'll report the LED state as pin0. If you have a real device connected to pin0, you don't need to pretend, you can just read/write pin0.
+
+First, let's look at how to publish an MQTT message:
+
+```c
+  sprintf(publishPayload, "{\"state\":{\"reported\":{\"pin0\":%d, \"rssi\":%d }},\"clientToken\":\"%s\"}",
+    digitalRead(LED_BUILTIN),
+    WiFi.RSSI(),
+    clientId
+  );
+  client.publish(publishTopic, publishPayload);
+```
+
+In the above, we are formatting a json message to send to the MQTT <code>publishTopic</code>.
