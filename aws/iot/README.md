@@ -224,3 +224,17 @@ Task 2
 Update the main loop to print the rssi. Play around with the board, and try to partially block the wifi connection. You should see the rssi value change. Feel free to tweak the <code>delay()</code> value, to print the rssi more frequently.
 
 ![task2-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task2-complete.png "Task 2 Complete")
+
+Reading Pins
+============
+
+In our previous section, we got our device connected to wifi, and printed our connection strength in the main loop. Let's start reading device pins. This is probably going to be super complic...
+
+```c
+  long ledValue = digitalRead(LED_BUILTIN);
+  Serial.println("LED:");
+  Serial.println(ledValue);
+```
+.. *never mind*.. Turns out, reading pins is pretty easy. Digital read will read the value of a pin as a 0 (low) or 1 (high).
+In this example, we're reading the value of the built-in LED.
+
