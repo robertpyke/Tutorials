@@ -307,13 +307,18 @@ Reading Analog Sensor Pins
 
 Let's quickly learn how to read an analog sensor. This is a sensor that can output a range of values. For example, a light sensor can detect a range (dark to bright).
 
-When reading an analog pin, you'll need to use an analog pin on the board. These pins are prefixed with **A**. Let's take our sensor from before, and connect it to A1. Now, update your code to analogRead pin A1:
+When reading an analog pin, you'll need to use an analog pin on the board. These pins are prefixed with **A**. The following code shows how to read an analog pin (A1):
 
 ```c
-  long analogPin0Value = analogRead(1);
-  Serial.println(analogPin0Value);
+  long analogPin1Value = analogRead(1);
+  Serial.println(analogPin1Value);
 ```
 
 [analogRead reference](https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/)
 
 If your sensor is digital, you'll probably read a value near 0 (the min), or a value near 1023 (the max). These values are relative to the voltage across the sensor's output pin. If the sensor is analog, you should see a range of values, based on how you manipulate the sensor.
+
+Task 6
+--------------------
+
+Let's take our sensor from before, and connect it to A1. Now, update your code to read analog pin 1. Try to manipulate your sensor. What do you see?
