@@ -256,6 +256,9 @@ Reading Sensor Pins
 
 In the previous section, we learnt how to read a pin, but it's always the same value. Let's introduce a sensor. We're going to focus on digital sensors, those that are either on, or off. In my example, I'm going to integrate a vibration sensor, but you can use any other digital sensor.
 
+Task 4
+--------
+
 Let's connect the sensor to the board. Disclaimer: You're about to be dealing with some low voltage electricity. If that makes you uncomfortable, don't continue.
 
 The sensor has a VCC, GND, and DO pin.
@@ -264,9 +267,10 @@ The sensor has a VCC, GND, and DO pin.
 - GND is the ground pin, and
 - DO is the digital out pin.
 
-Connect the **VCC** pin on the sensor, to the **VCC** pin of the board.
-Connect the **GND** pin on the sensor, to the **GND** pin of the board.
-Connect the **DO** pin on the sensor, to the **0** pin of the board.
+- Connect the **VCC** pin on the sensor, to the **VCC** pin of the board.
+- Connect the **GND** pin on the sensor, to the **GND** pin of the board.
+- Connect the **DO** pin on the sensor, to the **0** pin of the board.
 
 Once the VCC and GND pins are connected, if your sensor has a status LED, it'll probably light up.
 
+![task4-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task4-complete "Task 4 Complete")
