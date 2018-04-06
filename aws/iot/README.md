@@ -679,3 +679,31 @@ As you hit save, keep an eye on the serial monitor for your device. Assuming you
 ![task9-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task9-complete.png "Task 9 Complete")
 
 At this point, your device is now connected to AWS IOT, and you're able to receive the updated desired state for your device.
+
+Respond to Delta
+==================
+
+You received a message telling you that your pin has a different desired value, to what you reported.
+
+Let's update our code to set the pin to the desired value.
+
+First, we'll just get the value out of the JSON, and make sure we're parsing everything correctly:
+```c
+    ...
+    // Check that the JSON object has everything we want/need
+    if (root["state"].success() && root["state"]["pin0"].success() && root["state"]["pin0"].is<int>()) {
+      // Pull out pin0 as an int.
+      int pin0Value = root["state"]["pin0"].as<int>();
+      Serial.print("Pin 0, desired: ");
+      Serial.println(pin0Value);
+    }
+```
+
+We should be seeing the output:
+```
+MQTT Callback
+$aws/things/THING_1/shadow/update/delta
+{"version":3632,"timestamp":1522998303,"state":{"pin0":1},"metadata":{"pin0":{"timestamp":1522998303}}}
+parseObject() parsed it real good
+Pin 0, desired: 1
+```
