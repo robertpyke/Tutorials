@@ -373,7 +373,7 @@ You have an internet connected device, and you're in a tutorial folder called aw
 
 We're going to first get your device an established MQTT client connection to AWS IOT. MQTT is a lightweight protocol for sending data. In this case, we'll use MQTT to send messages to AWS IOT, and to read messages from AWS IOT.
 
-Let's replace your main ino file with the following:
+Let's replace your main .ino file with the following:
 
 ```c
 #include "arduino_secrets.h"
@@ -390,6 +390,8 @@ int status = WL_IDLE_STATUS;  // the WiFi radio's status
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 
+// Also have to actually override this in the PubSubClient.h
+#define MQTT_MAX_PACKET_SIZE 4096
 
 char mqttServer[]     = MQTT_IP;
 char clientId[]       = THING_NAME;
@@ -456,7 +458,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(buf);
 
   if (String(topic) == "$aws/things/" THING_NAME "/shadow/update/delta") {
-    StaticJsonBuffer<4000> jsonBuffer;
+    StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(buf);
     // Test if parsing succeeds.
     if (!root.success()) {
@@ -545,3 +547,12 @@ void printWiFiData() {
   Serial.println();
 }
 ```
+You'll also need to update the following values in your arduino_secrets.h file:
+
+```c
+#define AWS_EP "XXXXXXXXXX.iot.us-east-1.amazonaws.com"
+#define MQTT_IP "XX.XXX.XXX.XXX"
+#define THING_NAME "THING_X"
+```
+
+If you're lucky enough to be in a physical lab with me, doing this, you should get the real values we'll be using. I've already set up some specific things for you.
