@@ -307,7 +307,7 @@ Reading Analog Sensor Pins
 
 Let's quickly learn how to read an analog sensor. This is a sensor that can output a range of values. For example, a light sensor can detect a range (dark to bright).
 
-When reading an analog pin, you'll need to use an analog pin on the board. Let's take our sensor from before, and connect it to A1. Now, update your code to analogRead pin A1:
+When reading an analog pin, you'll need to use an analog pin on the board. These pins are prefixed with **A**. Let's take our sensor from before, and connect it to A1. Now, update your code to analogRead pin A1:
 
 ```c
   long analogPin0Value = analogRead(1);
