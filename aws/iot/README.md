@@ -195,3 +195,27 @@ void printWiFiData() {
 ```
 
 This sample code is provided by the Wifi101 module. This function prints general information about the wifi connection. The main thing I want to draw your attention to is the *rssi*. We'll use this later in the lab. The *rssi* is the "received signal strength indicator" of the Wifi connection. This number will be negative, and the closer the value is to 0, the stronger the wifi connection.
+
+Main Loop
+----------
+
+This is the main loop:
+
+```c
+void loop() {
+  delay(500);
+  Serial.println("looping..");
+}
+```
+
+As you can see, it's pretty bare-bones. We loop every 500ms, and print looping..
+
+Task 1
+-----------
+
+Okay, you've had a breif explanation of the main parts of the file. You should have a sketch with one main .ino file, and an arduino_secrets.h file. Your first task, update the .h file, and the .ino file, with the correct Wifi SSID/PASS. If the wifi doesn't have a password, don't forget to remove the pass paramater where indicated above. Once you've made those few changes, run the code, and make sure you're seeing the device connect to wifi, and then loop on the main loop.
+
+Task 2
+-------------
+
+Update the main loop to print the rssi. Play around with the board, and try to partially block the wifi connection. You should see the rssi value change.
