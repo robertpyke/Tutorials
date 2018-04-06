@@ -53,7 +53,7 @@ For now, you just need to set the WIFI SSID and PASS (if your wifi is password p
 #define SECRET_PASS ""
 ```
 
-Wifi101 is the Wifi library that supports our device's wifi chipset.
+Wifi101 is the Wifi library that supports our device's wifi chipset. [Reference/Docs](https://www.arduino.cc/en/Reference/WiFi101)
 
 Setup
 -------------------------------
@@ -109,3 +109,32 @@ Let's go into each section, and briefly discuss what's happening.
 
 In this section, we're opening the serial port. The serial port allows for us to communicate to/from the board. The arduino IDE has a serial monitor, that will let us see the serial output from the board. For this project, we'll use the serial port as a logger, letting us watch what's happening on the board. 9600 is the baud rate (9600 bits/second).
 
+```c
+ // check for the presence of the shield:
+ if (WiFi.status() == WL_NO_SHIELD) {
+   Serial.println("WiFi shield not present");
+   // don't continue:
+   while (true);
+ }
+```
+
+Here, we're checking for the existence of a WiFi shield/module. In arduino speak, the shield is just a physical module. This is just confirming the device is fitted with Wifi support.
+
+```c
+  // attempt to connect to WiFi network:
+  while ( status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to WPA SSID: ");
+    Serial.println(ssid);
+    // Connect to WPA/WPA2 network:
+    status = WiFi.begin(ssid, pass);
+
+    // wait 10 seconds for connection:
+    delay(10000);
+  }
+```
+
+Here we see a loop. While the device is not connected to wifi, it loops, attempting to connect. It gives the board 10 seconds to connect, before giving up, and looping again.
+
+This is the first time you're seeing Serial.print (and Serial.println). Serial.print(ln) is printing to the Serial port (as we discussed before). When you run this code, you'll be able to see these "print statements" in the serial monitor.
+
+If you're attempting to connect to a network without password protection, remove the pass argument.
