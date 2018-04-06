@@ -12,6 +12,28 @@ Let's start with the [base_wifi.ino](https://github.com/robertpyke/Tutorials/blo
 
 The following is a brief explanation of each part of the initial base_wifi.ino:
 
+File Overview
+------------------
+
+The following are the 3 main sections of the file:
+
+```
+#include ...
+
+setup() {
+  ...
+}
+
+loop() {
+  ...
+}
+```
+
+The first section contains the #include statements. These are your imports (the libraries you're using).
+
+The second section is the setup function. This runs once on start-up, and can be used to configure your board, clients, etc.
+
+The third section is the main loop. This function will be called after setup, repeatedly. It's where you'll implement your main device business logic.
 
 Libraries/constants
 -----------------------
@@ -30,4 +52,7 @@ For now, you just need to set the WIFI SSID and PASS (if your wifi is password p
 #define SECRET_SSID "Guest"
 #define SECRET_PASS ""
 ```
+
+Wifi101 is the Wifi library that supports our device's wifi chipset.
+
 
