@@ -289,3 +289,5 @@ We wired the sensor to the board, but we're not using it yet. Let's start readin
 ```
 
 With this in the main loop, we should be able to manipulate the sensor, and see the value change. Update your main loop to read the pin0 value every 50ms. Then try to manipulate the sensor - what do you see?
+
+![task5-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task5-complete.png "Task 5 Complete")
