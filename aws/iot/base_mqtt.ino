@@ -11,7 +11,9 @@ int status = WL_IDLE_STATUS;  // the WiFi radio's status
 
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
-StaticJsonBuffer<2000> jsonBuffer;
+
+// Also have to actually override this in the PubSubClient.h
+#define MQTT_MAX_PACKET_SIZE 4096
 
 char mqttServer[]     = MQTT_IP;
 char clientId[]       = THING_NAME;
@@ -78,6 +80,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(buf);
 
   if (String(topic) == "$aws/things/" THING_NAME "/shadow/update/delta") {
+    StaticJsonBuffer<MQTT_MAX_PACKET_SIZE> jsonBuffer;
     JsonObject& root = jsonBuffer.parseObject(buf);
     // Test if parsing succeeds.
     if (!root.success()) {
