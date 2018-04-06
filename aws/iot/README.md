@@ -654,3 +654,24 @@ Task 8
 Update the code above with your real values, and then run it. You should get the following:
 
 ![task8-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task8-complete.png "Task 8 Complete")
+
+Task 9
+--------
+
+Now that you've got the device connected, and it's looping, I want you to update the shadow state of the device (via the AWS console).
+Change the desired state for a pin. For example:
+
+```json
+{
+  "desired": {
+    "pin0": 1
+  },
+  "reported": {
+    "welcome": "aws-iot"
+  }
+ }
+```
+
+As you hit save, keep an eye on the serial monitor for your device. Assuming you're updating the device you're subscribed to, you should see a couple of messages:
+
+![task9-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task9-complete.png "Task 9 Complete")
