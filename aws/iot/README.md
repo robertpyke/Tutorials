@@ -610,7 +610,7 @@ void reconnect() {
   }
 }
 
-voic loop() {
+void loop() {
   if (!client.connected()) {
     reconnect();
   }
@@ -618,7 +618,7 @@ voic loop() {
 }
 ```
 
-This function manages connecting to our MQTT endpoint, and subscribing to the MQTT topics. If you lose network connection, the reconnect function will get you back onto the MQTT topics.
+This <code>reconnect</code> function manages connecting to our MQTT endpoint, and subscribing to the MQTT topics. If you lose network connection, the reconnect function will get you back onto the MQTT topics.
 
 Task 8
 ---------
