@@ -238,6 +238,7 @@ In our previous section, we got our device connected to wifi, and printed our co
   Serial.println("LED:");
   Serial.println(ledValue);
 ```
+
 .. *never mind*.. Turns out, reading pins is pretty easy. Digital read will read the value of a pin as a 0 (low) or 1 (high).
 In this example, we're reading the value of the built-in LED.
 
@@ -274,3 +275,17 @@ The sensor has a VCC, GND, and DO pin.
 Once the VCC and GND pins are connected, if your sensor has a status LED, it'll probably light up.
 
 ![task4-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task4-complete "Task 4 Complete")
+
+Bonus points if you use a bread board.
+
+Task 5
+----------
+
+We wired the sensor to the board, but we're not using it yet. Let's start reading the sensor value in our main loop. In my example, I connected the sensor to pin 0. Let's read pin 0.
+
+```c
+  long pin0Value = digitalRead(0);
+  Serial.println(pin0Value);
+```
+
+With this in the main loop, we should be able to manipulate the sensor, and see the value change. Update your main loop to read the pin0 value every 50ms. Then try to manipulate the sensor - what do you see?
