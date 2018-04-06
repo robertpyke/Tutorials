@@ -331,3 +331,35 @@ Task 7
 ----------------------
 
 Before we proceed, return the code to a digital read (on pin 0). I'm going to expect you to be using pin 0, with a digital sensor, later in this lab.
+
+Writing Pins
+============
+
+You're doing great, you've read a sensor. What can you do with that? Great question.. thanks for asking.. let's take that sensor value, and turn our built-in LED on/off based on its value.
+
+To turn on the LED, we just need to set its pin high (1). We can turn it off by setting it low (0).
+
+```c
+void setup() {
+  ...
+  
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+  ...
+}
+
+void loop() {
+  ...
+  digitalWrite(LED_BUILTIN, ledValue);
+}
+```  
+
+In the above, we do two things: 
+
+1. In the setup, we set the LED pin as an output, i.e. we're going to write to it.
+2. In the main loop, we write to the pin, whatever ledValue is.
+
+Task 7
+---------
+
+You already know how to perform a digital read, and now you know how to write to the LED. Rather than logging the sensor value when you read it, let's set the LED to on/off, based on the sensor value. Consider using a shorter delay for this loop (now you're not printing) - 10ms should be good.
