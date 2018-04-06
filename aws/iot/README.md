@@ -826,3 +826,12 @@ Task 15
 ---------
 
 Throw some more sensors on (using pins 0, 1 and 7). See if you can report the state of multiple sensors at the same time.
+
+Task 16
+--------
+
+At this point, you're done with the Lab - these are just some extensions if you're curious.
+
+Add a IOT rule, and publish rssi to CloudWatch... The rules are managed through the "Act" interface in IOT. You can find an example on THING_1 (if you're in the lab with me).
+
+
