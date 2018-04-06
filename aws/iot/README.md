@@ -816,3 +816,13 @@ Using the above, trigger a state refresh whenever you need to reconnect your MQT
 You should see something like:
 
 ![task13-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task13-complete.png "Task 13 Complete")
+
+Task 14
+----------
+
+Notice the refresh state doesn't come through on the same topic as the delta. Update your code to support processing the delta from the refresh.
+
+Task 15
+---------
+
+Throw some more sensors on (using pins 0, 1 and 7). See if you can report the state of multiple sensors at the same time.
