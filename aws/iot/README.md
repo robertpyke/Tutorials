@@ -252,7 +252,7 @@ Notice anything, is your bored rate increasing (*get it, it's punny*)? The LED v
 ![task3-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task3-complete.png "Task 3 Complete")
 
 
-Reading Sensor Pins
+Reading Digital Sensor Pins
 -----------------------
 
 In the previous section, we learnt how to read a pin, but it's always the same value. Let's introduce a sensor. We're going to focus on digital sensors, those that are either on, or off. In my example, I'm going to integrate a vibration sensor, but you can use any other digital sensor.
@@ -265,6 +265,8 @@ Reading a sensor is just a matter of reading the specific pin the sensor is conn
 ```
 
 In the above code, we're reading the value of pin 0.
+
+[digitalRead reference](https://www.arduino.cc/reference/en/language/functions/digital-io/digitalread/)
 
 Task 4
 --------
@@ -299,3 +301,19 @@ Add the code for reading pin0 to the main loop. Once added, we should be able to
 In my case, when I shake the vibration sensor, the pin reads 1. When I don't, it reads 0.
 
 At this point, we have a board connected to a network, that is reading values of connected pins.
+
+Reading Analog Sensor Pins
+-----------------------
+
+Let's quickly learn how to read an analog sensor. This is a sensor that can output a range of values. For example, a light sensor can detect a range (dark to bright).
+
+When reading an analog pin, you'll need to use an analog pin on the board. Let's take our sensor from before, and connect it to A1. Now, update your code to analogRead pin A1:
+
+```c
+  long analogPin0Value = analogRead(1);
+  Serial.println(analogPin0Value);
+```
+
+[analogRead reference](https://www.arduino.cc/reference/en/language/functions/analog-io/analogread/)
+
+If your sensor is digital, you'll probably read a value near 0 (the min), or a value near 1023 (the max). These values are relative to the voltage across the sensor's output pin. If the sensor is analog, you should see a range of values, based on how you manipulate the sensor.
