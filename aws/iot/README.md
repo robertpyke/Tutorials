@@ -322,3 +322,7 @@ Task 6
 --------------------
 
 Let's take our sensor from before, and connect it to A1. Now, update your code to read analog pin 1. Try to manipulate your sensor. What do you see?
+
+![task6-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task6-complete.png "Task 6 Complete")
+
+In my case, my sensor is a digital sensor. It's either on, or off. For that reason, I see nearly 1023 (full voltage) when I shake the vibration sesnor, and ~20 (nearly no voltage) when it's idle.
