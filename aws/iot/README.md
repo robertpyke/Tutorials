@@ -218,4 +218,4 @@ Okay, you've had a breif explanation of the main parts of the file. You should h
 Task 2
 -------------
 
-Update the main loop to print the rssi. Play around with the board, and try to partially block the wifi connection. You should see the rssi value change.
+Update the main loop to print the rssi. Play around with the board, and try to partially block the wifi connection. You should see the rssi value change. Feel free to tweak the <code>delay()</code> value, to print the rssi more frequently.
