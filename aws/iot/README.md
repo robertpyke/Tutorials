@@ -17,7 +17,7 @@ File Overview
 
 The following are the 3 main sections of the file:
 
-```
+```c
 #include ...
 
 setup() {
@@ -38,7 +38,7 @@ The third section is the main loop. This function will be called after setup, re
 Libraries/constants
 -----------------------
 
-```
+```c
 #include "arduino_secrets.h"
 #include <SPI.h>
 #include <WiFi101.h>
@@ -48,7 +48,7 @@ The arduino_secrets.h file contains our constants.
 
 For now, you just need to set the WIFI SSID and PASS (if your wifi is password protected).
 
-```
+```c
 #define SECRET_SSID "Guest"
 #define SECRET_PASS ""
 ```
@@ -60,7 +60,7 @@ Setup
 
 This is the setup function:
 
-```
+```c
 void setup() {
   
   //Initialize serial and wait for port to open:
@@ -99,7 +99,7 @@ void setup() {
 
 Let's go into each section, and briefly discuss what's happening.
 
-```
+```c
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
