@@ -238,3 +238,7 @@ In our previous section, we got our device connected to wifi, and printed our co
 .. *never mind*.. Turns out, reading pins is pretty easy. Digital read will read the value of a pin as a 0 (low) or 1 (high).
 In this example, we're reading the value of the built-in LED.
 
+task 3
+------
+
+Read the value of the LED pin in the main loop. Don't cheat... actually do it. I'll know if you didn't.
