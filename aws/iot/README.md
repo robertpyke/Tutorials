@@ -257,6 +257,15 @@ Reading Sensor Pins
 
 In the previous section, we learnt how to read a pin, but it's always the same value. Let's introduce a sensor. We're going to focus on digital sensors, those that are either on, or off. In my example, I'm going to integrate a vibration sensor, but you can use any other digital sensor.
 
+Reading a sensor is just a matter of reading the specific pin the sensor is connected to:
+
+```c
+  long pin0Value = digitalRead(0);
+  Serial.println(pin0Value);
+```
+
+In the above code, we're reading the value of pin 0.
+
 Task 4
 --------
 
@@ -283,11 +292,10 @@ Task 5
 
 We wired the sensor to the board, but we're not using it yet. Let's start reading the sensor value in our main loop. In my example, I connected the sensor to pin 0. Let's read pin 0.
 
-```c
-  long pin0Value = digitalRead(0);
-  Serial.println(pin0Value);
-```
-
-With this in the main loop, we should be able to manipulate the sensor, and see the value change. Update your main loop to read the pin0 value every 50ms. Then try to manipulate the sensor - what do you see?
+Add the code for reading pin0 to the main loop. Once added, we should be able to manipulate the sensor, and see the value change. Update your main loop to read the pin0 value every 50ms. Then try to manipulate the sensor - what do you see?
 
 ![task5-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task5-complete.png "Task 5 Complete")
+
+In my case, when I shake the vibration sensor, the pin reads 1. When I don't, it reads 0.
+
+At this point, we have a board connected to a network, that is reading values of connected pins.
