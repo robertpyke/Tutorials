@@ -366,7 +366,7 @@ You already know how to perform a digital read, and now you know how to write to
 
 At this point, you should be reading a sensor value, and turning on/off the LED based on that sensor value.
 
-Updating your IOT shadow
+AWS IOT Setup
 ==========================
 
 You have an internet connected device, and you're in a tutorial folder called aws/iot... hopefully you saw this coming... it's time to start sharing to the world the value of your inner most pins (using AWS IOT).
@@ -677,3 +677,5 @@ Change the desired state for a pin. For example:
 As you hit save, keep an eye on the serial monitor for your device. Assuming you're updating the device you're subscribed to, you should see a couple of messages:
 
 ![task9-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task9-complete.png "Task 9 Complete")
+
+At this point, your device is now connected to AWS IOT, and you're able to receive the updated desired state for your device.
