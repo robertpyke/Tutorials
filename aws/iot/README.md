@@ -798,6 +798,8 @@ void loop() {
 
 At this point, assuming you did something like the above, you'll be sending your device state to IOT, and you'll be receiving deltas whenever the shadow is updated so that it no longer matches the reported. Your LED should turn on/off as you set the pin0 value in the desired. The pin0 value should be updated in the reported section, along with the rssi value. At this point, we're only missing one key thing... we don't read the initial delta. If a delta is reported while you're not on MQTT, you won't see it. Let's fix that.
 
+Feel free to throw a few extra sensors in, and report their value. The next bit can wait..
+
 Get Desired in Connect/Reconnect
 ==================================
 
@@ -823,11 +825,17 @@ Task 14
 Notice the refresh state doesn't come through on the same topic as the delta. Update your code to support processing the delta from the refresh.
 
 Task 15
----------
+--------
 
-Throw some more sensors on (using pins 0, 1 and 7). See if you can report the state of multiple sensors at the same time.
+Ask Alexa to interface with your shadow (if you're in the lab with me, mention you made it this far).
 
 Task 16
+---------
+
+If you haven't already, throw some more sensors on (using pins 0, 1 and 7). See if you can report the state of multiple sensors at the same time.
+
+
+Task 17
 --------
 
 At this point, you're done with the Lab - these are just some extensions if you're curious.
