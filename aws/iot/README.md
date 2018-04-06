@@ -325,4 +325,4 @@ Let's take our sensor from before, and connect it to A1. Now, update your code t
 
 ![task6-complete](https://github.com/robertpyke/Tutorials/raw/master/aws/iot/pics/task6-complete.png "Task 6 Complete")
 
-In my case, my sensor is a digital sensor. It's either on, or off. For that reason, I see nearly 1023 (full voltage) when I shake the vibration sesnor, and ~20 (nearly no voltage) when it's idle.
+In my case, my sensor is a digital sensor. It's either on, or off. For that reason, I see nearly 1023 (full voltage) when I shake the vibration sesnor, and ~20 (nearly no voltage) when it's idle. Why isn't it exactly 0 or 1023? This is a physical circuit, the real world requires tolerance ;)
